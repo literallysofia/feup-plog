@@ -14,14 +14,14 @@ initialBoard([
 
 midBoard([
 [empty,empty,empty,empty,white,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,white,empty,empty,empty,empty,empty,empty],
+[empty,empty,empty,empty,empty,empty,empty,empty,empty,red,empty],
 [empty,white,empty,empty,empty,empty,empty,empty,white,empty,empty],
-[empty,empty,empty,black,empty,white,empty,empty,white,empty,empty],
+[empty,empty,empty,empty,empty,white,empty,empty,white,empty,empty],
 [empty,empty,empty,black,empty,black,black,black,empty,empty,empty],
-[empty,empty,empty,black,empty,empty,empty,empty,white,empty,empty],
+[empty,empty,empty,empty,empty,empty,empty,empty,white,empty,empty],
 [empty,empty,empty,black,empty,white,empty,empty,empty,empty,empty],
-[empty,empty,red,black,empty,empty,black,empty,white,empty,empty],
-[white,black,empty,empty,empty,empty,empty,empty,empty,red,empty],
+[empty,empty,empty,black,empty,red,black,empty,empty,empty,empty],
+[empty,black,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,black,empty,empty,empty,empty,empty,white,empty,empty]
 ]).
@@ -60,9 +60,9 @@ printBoard([Head|Tail]) :-
 printBoard([]).
 
 /*print line */
-printLine([H|Tt]) :-
-    translate(H,T),
+printLine([Head|Tail]) :-
+    translate(Head,T),
     write(T),
     write('|'),
-    printLine(Tt).
+    printLine(Tail).
 printLine([]).
