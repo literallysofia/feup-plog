@@ -41,11 +41,10 @@ finalBoard([
 ]).
 
 
-translate(empty,T) :- T='.'.
-translate(black,T) :- T='B'.
-translate(white,T) :- T='W'.
-translate(red,T) :- T='*'.
-translate(A,T) :- T=A.
+symbol(empty,S) :- S='.'.
+symbol(black,S) :- S='B'.
+symbol(white,S) :- S='W'.
+symbol(red,S) :- S='*'.
 
 /*print board*/
 printBoard :-
@@ -61,8 +60,8 @@ printBoard([]).
 
 /*print line */
 printLine([Head|Tail]) :-
-    translate(Head,T),
-    write(T),
+    symbol(Head,S),
+    write(S),
     write('|'),
     printLine(Tail).
 printLine([]).
