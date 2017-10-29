@@ -42,26 +42,42 @@ finalBoard([
 
 
 symbol(empty,S) :- S='.'.
-symbol(black,S) :- S='B'.
-symbol(white,S) :- S='W'.
+symbol(black,S) :- S='X'.
+symbol(white,S) :- S='O'.
 symbol(red,S) :- S='*'.
+symbol(1, L) :-L='A'.
+symbol(2, L) :-L='B'.
+symbol(3, L) :-L='c'.
+symbol(4, L) :-L='D'.
+symbol(5, L) :-L='E'.
+symbol(6, L) :-L='F'.
+symbol(7, L) :-L='G'.
+symbol(8, L) :-L='H'.
+symbol(9, L) :-L='I'.
+symbol(10, L) :-L='J'.
+symbol(11, L) :-L='K'.
 
 /*print board*/
 printBoard :-
     midBoard(X),
-    printBoard(X).
+    write('  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10| 11|\n'),
+    write('--|---|---|---|---|---|---|---|---|---|---|---|\n'),
+    printBoard(X,1).
 
-printBoard([Head|Tail]) :-
-    write('|'),
+printBoard([Head|Tail],N) :-
+    symbol(N,L),
+    write(L),
+    N1 is N+1,
+    write(' | '),
     printLine(Head),
     nl,
-    printBoard(Tail).
-printBoard([]).
+    printBoard(Tail,N1).
+printBoard([],0).
 
 /*print line */
 printLine([Head|Tail]) :-
     symbol(Head,S),
     write(S),
-    write('|'),
+    write(' | '),
     printLine(Tail).
 printLine([]).
