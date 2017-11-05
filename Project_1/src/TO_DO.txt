@@ -1,0 +1,16 @@
+> Mover de facto o worker, não adicionar simplesmente um novo.
+> Verificação de inputs.
+> Verificar se ja existem cenas naquelas celulas.
+> Verificação de jogadas, ou seja, se são possiveis com as regras do jogo.
+> Terminar o loop quando se ganha ou perde.
+> Menu bonitinho para escolher: Pessoa/Pessoa, Pessoa/Computador, Computador/Computador.
+> Pessoa/Computador.
+> Computador/Computador.
+
+Correr:
+1. Fazer consult do ficheiro fabrik.pl.
+2. Escrever "fabrik.".
+
+Dont forget: 
+> Usar sempre pontos finais.
+> Letras maiusculas no terminal têm que ser entre ' '.
