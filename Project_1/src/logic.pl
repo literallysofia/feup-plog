@@ -24,10 +24,12 @@ askCoords(Board, Player, NewBoard) :-
         replaceInMatrix(Board, RowIndex, CollumnIndex, Player, NewBoard).
 
 moveWorker(Board, 'Y', NewBoard) :-
-        write('\n2. Choose worker new cell.\n'),
-        askCoords(Board, red, NewBoard),
+        write('\n2. Choose worker current cell.\n'),
+        askCoords(Board, empty, NoWorkerBoard),
+        write('3. Choose worker new cell.\n'),
+        askCoords(NoWorkerBoard, red, NewBoard),
         printBoard(NewBoard),
-        write('\n3. Choose your cell.\n').
+        write('\n4. Choose your cell.\n').
 
 moveWorker(Board, 'N',NewBoard) :-
         NewBoard = Board,
