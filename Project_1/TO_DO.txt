@@ -5,7 +5,7 @@ TODO:
 > Terminar o loop quando se ganha ou perde.
 > Pessoa/Computador.
 > Computador/Computador.
-> Regras (?)
+> Regras (?).
 
 DONE:
 > Menu bonitinho para escolher: Pessoa/Pessoa, Pessoa/Computador, Computador/Computador. 
