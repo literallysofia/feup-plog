@@ -3,6 +3,23 @@ invalidInput(Board, Player, NewBoard, Expected):-
       write('INVALID INPUT: Cell not valid, please try again.\n'), %TODO: melhorar este print
       askCoords(Board, Player, NewBoard, Expected).
 
+%TODO: coluna e linha
+
+workLines(_, _, _, _, _, 10) :-
+      fail.
+
+workLines(Board, WX, WY, X, Y, Index):-
+      (X == WX);
+      (Y == WY);
+      (X =:= WX + Index, Y =:= WY + Index);
+      (X =:= WX - Index, Y =:= WY - Index);
+      (X =:= WX + Index, Y =:= WY - Index);
+      (X =:= WX - Index, Y =:= WY + Index);
+      Index < 10,
+      Index1 is Index +1,
+      workLines(Board, WX, WY, X, Y, Index1).
+
+
 askCoords(Board, Player, NewBoard, Expected) :-
         write('  > Row     '),
         read(RowLetter),

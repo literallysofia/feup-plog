@@ -15,9 +15,9 @@ initialBoard([
 %TODO: delete
 testBoard([
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,red,empty,black,empty,white,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
+[empty,empty,empty,empty,red,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
@@ -27,6 +27,13 @@ testBoard([
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty]
 ]).
 
+testMiniBoard([
+[empty,empty,empty,empty,empty],
+[empty,empty,empty,empty,empty],
+[empty,empty,red,empty,empty],
+[empty,empty,empty,empty,empty],
+[empty,empty,empty,empty,empty]
+]).
 
 symbol(empty,S) :- S='.'.
 symbol(black,S) :- S='X'.
