@@ -7,13 +7,13 @@ askCoords(Board, Player, NewBoard, Expected) :-
         write('  > Row     '),
         read(RowLetter),
         number(RowLetter, Row),
-        write('  > Collumn '),
-        read(Collumn),
+        write('  > Column '),
+        read(Column),
         write('\n'),
-        CollumnIndex is Collumn - 1,
+        ColumnIndex is Column - 1,
         RowIndex is Row - 1,
-        ((getValueFromMatrix(Board, RowIndex, CollumnIndex, Expected),
-        replaceInMatrix(Board, RowIndex, CollumnIndex, Player, NewBoard));
+        ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
+        replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
         invalidInput(Board, Player, NewBoard, Expected)).
 
 moveWorker(Board, 'Y', NewBoard) :-
