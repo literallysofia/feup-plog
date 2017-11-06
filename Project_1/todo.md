@@ -1,6 +1,6 @@
 ## TODO
 #### Verificação de Inputs
-- [ ] Verificar input dos menus.
+- [x] Verificar input dos menus.
 - [ ] Verificar input de ROW (A - K).
 - [ ] Verificar input de COLUMN (1 - 11).
 
