@@ -5,19 +5,19 @@ invalidInput(Board, Player, NewBoard, Expected):-
 
 %TODO: coluna e linha
 
-workLines(_, _, _, _, _, 10) :-
+isWorkerLines(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 10) :-
       fail.
 
-workLines(Board, WX, WY, X, Y, Index):-
-      (X == WX);
-      (Y == WY);
-      (X =:= WX + Index, Y =:= WY + Index);
-      (X =:= WX - Index, Y =:= WY - Index);
-      (X =:= WX + Index, Y =:= WY - Index);
-      (X =:= WX - Index, Y =:= WY + Index);
+isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index):-
+      (Row == WorkerColumn);
+      (Column == WorkerColumn);
+      (Row =:= WorkerRow + Index, Column =:= WorkerColumn + Index);
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn - Index);
+      (Row =:= WorkerRow + Index, Column =:= WorkerColumn - Index);
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn + Index);
       Index < 10,
       Index1 is Index +1,
-      workLines(Board, WX, WY, X, Y, Index1).
+      isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index1).
 
 
 askCoords(Board, Player, NewBoard, Expected) :-
