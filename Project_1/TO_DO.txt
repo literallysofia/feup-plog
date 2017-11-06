@@ -1,6 +1,5 @@
 TODO:
 > Verificação de inputs.
-> Verificar se ja existem cenas naquelas celulas.
 > Verificação de jogadas, ou seja, se são possiveis com as regras do jogo.
 > Terminar o loop quando se ganha ou perde.
 > Pessoa/Computador.
@@ -10,3 +9,4 @@ TODO:
 DONE:
 > Menu bonitinho para escolher: Pessoa/Pessoa, Pessoa/Computador, Computador/Computador. 
 > Mover de facto o worker, não adicionar simplesmente um novo.
+> Verificar se ja existem cenas naquelas celulas.
