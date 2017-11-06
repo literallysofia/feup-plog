@@ -13,7 +13,6 @@
 - [ ] Saber as posições dos workers
 - [ ] Limitar os raios até encontrar uma peça preta ou branca.
 - [ ] Terminar o loop quando se ganha ou perde.
-- [ ] Aplicar regras.
 - [x] Mover o worker.
 - [x] Verificação de células vazias.
 - [X] Saber os raios dos workers.
