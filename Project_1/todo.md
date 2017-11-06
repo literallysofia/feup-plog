@@ -10,11 +10,13 @@
 - [ ] Computador VS Computador.
 
 #### Lógica de Jogo
-- [ ] Verificação de jogadas, ou seja, se são possiveis com as regras do jogo.
+- [ ] Saber as posições dos workers
+- [ ] Limitar os raios até encontrar uma peça preta ou branca.
 - [ ] Terminar o loop quando se ganha ou perde.
 - [ ] Aplicar regras.
 - [x] Mover o worker.
 - [x] Verificação de células vazias.
+- [X] Saber os raios dos workers.
 
 #### Menus
 - [ ] Ligar escolha de opção ao jogo em si.
