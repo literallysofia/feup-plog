@@ -7,12 +7,12 @@ replaceInList([H|T], Index, Value, [H|TNew]) :-
 replaceInMatrix([H|T], 0, Column,Value, [HNew|T]) :-
         replaceInList(H, Column, Value, HNew).
 
-replaceInMatrix([H|T], Row, Column, Value, [H|TNew]):-
+replaceInMatrix([H|T], Row, Column, Value, [H|TNew]) :-
         Row > 0,
         Row1 is Row - 1,
         replaceInMatrix(T, Row1, Column, Value, TNew).
 
-getValueFromList([H|_T], 0, Value):-
+getValueFromList([H|_T], 0, Value) :-
         Value = H.
 
 getValueFromList([_H|T], Index, Value) :-
@@ -24,6 +24,6 @@ getValueFromMatrix([H|_T], 0, Column, Value) :-
         getValueFromList(H, Column, Value).
 
 getValueFromMatrix([_H|T], Row, Column, Value) :-
-        Row>0,
-        Row1 is Row -1,
+        Row > 0,
+        Row1 is Row - 1,
         getValueFromMatrix(T, Row1, Column, Value).
