@@ -16,12 +16,12 @@ isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index) :-
       Index1 is Index + 1,
       isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index1).
 
-%Res = 0 se é valida, Res = -1 se não é valida.
-isValidPos(Board, Row, Column, Res) :-
+%Res = 1 se é valida, Res = 0 se não é valida.
+isValidPosLines(Board, Row, Column, Res) :-
       getWorkersPos(Board, Worker1Row, Worker1Column, Worker2Row, Worker2Column),
-      ((isWorkerLines(Board, Worker1Row, Worker1Column, Row, Column, 1), Res is 0);
-      (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, 1), Res is 0);
-      Res is -1).
+      ((isWorkerLines(Board, Worker1Row, Worker1Column, Row, Column, 1), Res is 1);
+      (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, 1), Res is 1);
+      Res is 0).
      
 askCoords(Board, Player, NewBoard, Expected) :-
         manageRow(_Row, NewRow),
@@ -32,6 +32,7 @@ askCoords(Board, Player, NewBoard, Expected) :-
         ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
         replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
         invalidInput(Board, Player, NewBoard, Expected)).
+
 
 moveWorker(Board, 'Y', NewBoard) :-
         write('\n2. Choose worker current cell.\n'),

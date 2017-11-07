@@ -17,14 +17,14 @@ testBoard([
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,red,empty,empty,empty,empty,empty,empty],
+[empty,empty,empty,empty,red,empty,empty,empty,empty,empty,white],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
+[empty,empty,empty,empty,empty,black,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,red,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,red]
+[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty]
 ]).
 
 testMiniBoard([

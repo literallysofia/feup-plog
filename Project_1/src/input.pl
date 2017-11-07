@@ -7,7 +7,7 @@ manageColumn(Column, NewColumn) :-
     validateColumn(Column, NewColumn).
 
 readRow(Row) :-
-    write('  > Row     '),
+    write('  > Row    '),
     read(Row).
 
 readColumn(Column) :-
