@@ -1,4 +1,3 @@
-
 invalidInput(Board, Player, NewBoard, Expected) :-
       write('INVALID INPUT: Cell not valid, please try again.\n'), %TODO: melhorar este print
       askCoords(Board, Player, NewBoard, Expected).
@@ -19,14 +18,11 @@ isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index) :-
 
 
 askCoords(Board, Player, NewBoard, Expected) :-
-        write('  > Row     '),
-        read(RowLetter),
-        number(RowLetter, Row),
-        write('  > Column '),
-        read(Column),
+        manageRow(_Row, NewRow),
+        manageColumn(_Column, NewColumn),
         write('\n'),
-        ColumnIndex is Column - 1,
-        RowIndex is Row - 1,
+        ColumnIndex is NewColumn - 1,
+        RowIndex is NewRow - 1,
         ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
         replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
         invalidInput(Board, Player, NewBoard, Expected)).
