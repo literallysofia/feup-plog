@@ -24,7 +24,7 @@ testBoard([
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty]
+[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,red]
 ]).
 
 testMiniBoard([
