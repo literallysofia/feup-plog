@@ -1,8 +1,8 @@
 ## TODO
 #### Verificação de Inputs
 - [x] Verificar input dos menus.
-- [ ] Verificar input de ROW (A - K).
-- [ ] Verificar input de COLUMN (1 - 11).
+- [x] Verificar input de ROW (A - K).
+- [x] Verificar input de COLUMN (1 - 11).
 
 #### Tipos de Jogo
 - [ ] Player VS Player.

@@ -52,21 +52,6 @@ letter(9, L) :- L='I'.
 letter(10, L) :- L='J'.
 letter(11, L) :- L='K'.
 
-number('A', N) :- N=1.
-number('B', N) :- N=2.
-number('C', N) :- N=3.
-number('D', N) :- N=4.
-number('E', N) :- N=5.
-number('F', N) :- N=6.
-number('G', N) :- N=7.
-number('H', N) :- N=8.
-number('I', N) :- N=9.
-number('J', N) :- N=10.
-number('K', N) :- N=11.
-
-/*number(_, _) :-
-    write('Invalid input\n').*/
-
 printBoard(X) :-
     write('  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10| 11|\n'),
     write('--|---|---|---|---|---|---|---|---|---|---|---|\n'),
