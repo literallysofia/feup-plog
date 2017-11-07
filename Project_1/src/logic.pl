@@ -3,6 +3,8 @@ invalidInput(Board, Player, NewBoard, Expected) :-
       write('INVALID INPUT: Cell not valid, please try again.\n'), %TODO: melhorar este print
       askCoords(Board, Player, NewBoard, Expected).
 
+isWorkerLines(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12) :-
+      fail.
 
 isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index) :-
       (Row == WorkerColumn);
@@ -15,6 +17,13 @@ isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index) :-
       Index1 is Index + 1,
       isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index1).
 
+%Res = 0 se é valida, Res = -1 se não é valida.
+isValidPos(Board, Row, Column, Res) :-
+      getWorkersPos(Board, Worker1Row, Worker1Column, Worker2Row, Worker2Column),
+      ((isWorkerLines(Board, Worker1Row, Worker1Column, Row, Column, 1), Res is 0);
+      (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, 1), Res is 0);
+      Res is -1).
+     
 askCoords(Board, Player, NewBoard, Expected) :-
         write('  > Row     '),
         read(RowLetter),

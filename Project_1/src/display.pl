@@ -23,7 +23,7 @@ testBoard([
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
+[empty,red,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,red]
 ]).
 
