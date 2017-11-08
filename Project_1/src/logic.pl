@@ -1,28 +1,35 @@
+%TODO: melhorar
 invalidInput(Board, Player, NewBoard, Expected) :-
-      write('INVALID INPUT: Cell not valid, please try again.\n'), %TODO: melhorar este print
+      write('INVALID INPUT: Cell not valid, please try again.\n'),
       askCoords(Board, Player, NewBoard, Expected).
 
-isWorkerLines(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12) :-
-      fail.
-
-isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index) :-
-      (Row == WorkerColumn);
-      (Column == WorkerColumn);
-      (Row =:= WorkerRow + Index, Column =:= WorkerColumn + Index);
-      (Row =:= WorkerRow - Index, Column =:= WorkerColumn - Index);
-      (Row =:= WorkerRow + Index, Column =:= WorkerColumn - Index);
-      (Row =:= WorkerRow - Index, Column =:= WorkerColumn + Index);
+%Res = 1 if that cell is in the worker lines, Res = 0 if it's not.
+isWorkerLines(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res) :-
+      Res is 0.
+isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res) :-
+      (Row =:= WorkerRow + Index, Column =:= WorkerColumn, Res is 1);
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn, Res is 1);
+      (Column =:= WorkerColumn + Index, Row =:= WorkerRow, Res is 1);
+      (Column =:= WorkerColumn - Index, Row =:= WorkerRow, Res is 1);
+      (Row =:= WorkerRow + Index, Column =:= WorkerColumn + Index, Res is 1);
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn - Index, Res is 1);
+      (Row =:= WorkerRow + Index, Column =:= WorkerColumn - Index, Res is 1);
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn + Index, Res is 1);
       Index < 12,
       Index1 is Index + 1,
-      isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index1).
+      isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res).
 
-%Res = 1 se é valida, Res = 0 se não é valida.
+%Res = 1 that cell is valid, Res = 0 if not.
 isValidPosLines(Board, Row, Column, Res) :-
       getWorkersPos(Board, Worker1Row, Worker1Column, Worker2Row, Worker2Column),
-      ((isWorkerLines(Board, Worker1Row, Worker1Column, Row, Column, 1), Res is 1);
-      (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, 1), Res is 1);
-      Res is 0).
-     
+      (
+        (isWorkerLines(Board, Worker1Row, Worker1Column, Row, Column, 1, ResIsWorkerLines1), ResIsWorkerLines1 =:= 1,
+        Res is 1);
+        (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, 1, ResIsWorkerLines2), ResIsWorkerLines2 =:= 1,
+        Res is 1);
+        Res is 0
+      ).
+
 askCoords(Board, Player, NewBoard, Expected) :-
         manageRow(_Row, NewRow),
         manageColumn(_Column, NewColumn),
