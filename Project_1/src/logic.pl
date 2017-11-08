@@ -3,18 +3,65 @@ invalidInput(Board, Player, NewBoard, Expected) :-
       write('INVALID INPUT: Cell not valid, please try again.\n'),
       askCoords(Board, Player, NewBoard, Expected).
 
+%O
+verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'O') :-
+      Res is 0.
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'O' ):-
+      (Column =:= WorkerColumn - Index, Row =:= WorkerRow, Res is 1); %O
+      Index < 12,
+      Index1 is Index +1,
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'O').
+
+%E
+verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'E') :-
+      Res is 0.
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'E' ):-
+      (Column =:= WorkerColumn + Index, Row =:= WorkerRow, Res is 1); %E
+      Index < 12,
+      Index1 is Index +1,
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'E').
+
+%S
+verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'S') :-
+      Res is 0.
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, ResS, 'S'):-
+      (Row =:= WorkerRow + Index, Column =:= WorkerColumn, Res is 1); %S
+      (WorkerRowTemp is WorkerRow + Index, getValueFromMatrix(Board, WorkerRowTemp, WorkerColumn, Value), Value \= empty, write(Value), Res is 0, write(Res));
+      ( Index < 12,
+      Index1 is Index + 1,
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'S'), write('verifyLine')).
+
+%N
+verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'N') :-
+            Res is 0.
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'N' ):-
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn, Res is 1); %N
+      Index < 12,
+      Index1 is Index +1,
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'N').
+
+%FUNÇAO QUE NAO FUNCIONA
+/*isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Res) :-
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResN, 'N' ), ResN =:= 1, write('RESN'), write(ResN),Res is 1);
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResS, 'S' ), ResS =:= 1, write('RESS'),write(ResS),Res is 1);
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResE, 'E' ), ResE =:= 1, write('RESE'),write(ResE),Res is 1);
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResO, 'O' ), ResO =:= 1, write('RESO'),write(ResO),Res is 1);
+      Res is 0.*/
+
+
+%FUNÇAO QUE FUNCIONA
 %Res = 1 if that cell is in the worker lines, Res = 0 if it's not.
 isWorkerLines(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res) :-
       Res is 0.
 isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res) :-
-      (Row =:= WorkerRow + Index, Column =:= WorkerColumn, Res is 1);
-      (Row =:= WorkerRow - Index, Column =:= WorkerColumn, Res is 1);
-      (Column =:= WorkerColumn + Index, Row =:= WorkerRow, Res is 1);
-      (Column =:= WorkerColumn - Index, Row =:= WorkerRow, Res is 1);
-      (Row =:= WorkerRow + Index, Column =:= WorkerColumn + Index, Res is 1);
-      (Row =:= WorkerRow - Index, Column =:= WorkerColumn - Index, Res is 1);
-      (Row =:= WorkerRow + Index, Column =:= WorkerColumn - Index, Res is 1);
-      (Row =:= WorkerRow - Index, Column =:= WorkerColumn + Index, Res is 1);
+      (Row =:= WorkerRow + Index, Column =:= WorkerColumn, Res is 1); %S
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn, Res is 1); %N
+      (Column =:= WorkerColumn + Index, Row =:= WorkerRow, Res is 1); %E
+      (Column =:= WorkerColumn - Index, Row =:= WorkerRow, Res is 1); %O
+      (Row =:= WorkerRow + Index, Column =:= WorkerColumn + Index, Res is 1); %SE
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn - Index, Res is 1); %NO
+      (Row =:= WorkerRow + Index, Column =:= WorkerColumn - Index, Res is 1); %SO
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn + Index, Res is 1); %NE
       Index < 12,
       Index1 is Index + 1,
       isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res).
