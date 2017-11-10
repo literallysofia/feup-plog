@@ -15,14 +15,14 @@ initialBoard([
 %TODO: delete
 testBoard([
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
+[empty,empty,white,empty,black,empty,black,empty,empty,empty,empty],
+[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
+[empty,black,empty,empty,red,empty,empty,empty,white,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,red,empty,empty,empty,empty,empty,white],
+[empty,black,empty,empty,empty,empty,empty,black,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,black,empty,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,black,empty,empty,empty,empty,empty,empty],
+[empty,empty,empty,empty,white,empty,empty,empty,empty,empty,empty],
 [empty,red,empty,empty,empty,empty,empty,empty,empty,empty,empty],
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty]
 ]).

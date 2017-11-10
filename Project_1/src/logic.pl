@@ -7,19 +7,21 @@ invalidInput(Board, Player, NewBoard, Expected) :-
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'O') :-
       Res is 0.
 verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'O' ):-
-      (Column =:= WorkerColumn - Index, Row =:= WorkerRow, Res is 1); %O
-      Index < 12,
+      (Column =:= WorkerColumn - Index, Row =:= WorkerRow, Res is 1);
+      ((WorkerColumnTemp is WorkerColumn - Index, getValueFromMatrix(Board, WorkerRow, WorkerColumnTemp, Value), Value \= empty, Res is 0),!);
+      (Index < 12,
       Index1 is Index +1,
-      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'O').
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'O')).
 
 %E
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'E') :-
       Res is 0.
 verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'E' ):-
-      (Column =:= WorkerColumn + Index, Row =:= WorkerRow, Res is 1); %E
-      Index < 12,
+      (Column =:= WorkerColumn + Index, Row =:= WorkerRow, Res is 1);
+      ((WorkerColumnTemp is WorkerColumn + Index, getValueFromMatrix(Board, WorkerRow, WorkerColumnTemp, Value), Value \= empty, Res is 0),!);
+      (Index < 12,
       Index1 is Index +1,
-      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'E').
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'E')).
 
 %S
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'S') :-
@@ -35,10 +37,11 @@ verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'S'):-
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'N') :-
             Res is 0.
 verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'N' ):-
-      (Row =:= WorkerRow - Index, Column =:= WorkerColumn, Res is 1); %N
-      Index < 12,
-      Index1 is Index +1,
-      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'N').
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn, Res is 1);
+      ((WorkerRowTemp is WorkerRow - Index, getValueFromMatrix(Board, WorkerRowTemp, WorkerColumn, Value), Value \= empty, Res is 0),!);
+      (Index < 12,
+      Index1 is Index + 1,
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'N')).
 
 %FUNÇAO QUE NAO FUNCIONA
 isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Res) :-
