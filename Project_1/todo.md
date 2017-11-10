@@ -10,14 +10,15 @@
 - [ ] Computador VS Computador.
 
 #### Lógica de Jogo
-- [ ] Melhor print de celula inválida.
+- [ ] Fazer uma funçao de input invalido em vez de estar no askCoords.
 - [ ] Terminar o loop quando se ganha ou perde.
 - [x] Mover o worker.
 - [x] Verificação de células vazias.
 - [X] Saber os raios dos workers.
 - [X] Saber as posições dos workers
 - [X] Limitar os raios até encontrar uma peça preta ou branca.
-- [X] Implementar isValidPosLines e isWorkerLines no askCoords
+- [X] Implementar isValidPosLines e isWorkerLines no askCoords.
+- [X] Melhor print de celula inválida.
 
 #### Menus
 - [ ] Ligar escolha de opção ao jogo em si.
