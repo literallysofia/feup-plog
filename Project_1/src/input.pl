@@ -1,8 +1,8 @@
-manageRow(Row, NewRow) :-
+manageRow(NewRow) :-
     readRow(Row),
     validateRow(Row, NewRow).
 
-manageColumn(Column, NewColumn) :-
+manageColumn(NewColumn) :-
     readColumn(Column),
     validateColumn(Column, NewColumn).
 

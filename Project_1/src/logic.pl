@@ -84,8 +84,8 @@ isValidPosLines(Board, Row, Column, Res) :-
        Res is 0).
 
 askCoords(Board, Player, NewBoard, Expected) :-
-        manageRow(_Row, NewRow),
-        manageColumn(_Column, NewColumn),
+        manageRow(NewRow),
+        manageColumn(NewColumn),
         write('\n'),
         ColumnIndex is NewColumn - 1,
         RowIndex is NewRow - 1,
