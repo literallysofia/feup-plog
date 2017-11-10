@@ -105,21 +105,44 @@ isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Res) :-
 isValidPosLines(Board, Row, Column, Res) :-
       getWorkersPos(Board, Worker1Row, Worker1Column, Worker2Row, Worker2Column),
       ((isWorkerLines(Board, Worker1Row, Worker1Column, Row, Column, ResIsWorkerLines1), ResIsWorkerLines1 =:= 1, Res is 1);
-       (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, ResIsWorkerLines2), ResIsWorkerLines2 =:= 1, Res is 1);
-       Res is 0).
+      (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, ResIsWorkerLines2), ResIsWorkerLines2 =:= 1, Res is 1);
+      Res is 0).
+
+checkMove(Board, Player, NewBoard, Expected, ColumnIndex, RowIndex):-
+      (((Player == empty, Expected == red),
+            ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
+                  replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
+                  (write('INVALID MOVE: There is no worker in that cell, please try again!\n\n'),
+                  askCoords(Board, Player, NewBoard, Expected))));
+      ((Player == red, Expected == empty),
+            ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
+                  replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
+                  (write('INVALID MOVE: That cell is not empty, please try again!\n\n'),
+                  askCoords(Board, Player, NewBoard, Expected))));
+      ((Player == empty),
+            ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
+                  replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
+                  (write('INVALID MOVE: That cell is not empty, please try again!\n\n'),
+                  askCoords(Board, Player, NewBoard, Expected))));
+      ((Player == white; Player == black),
+            ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
+                   ((isValidPosLines(Board, RowIndex, ColumnIndex, ResIsValidPosLines), ResIsValidPosLines =:= 1),
+                        replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard);
+                        (write('INVALID MOVE: That cell is not within the workers lines of sight, please try again!\n\n'),
+                        askCoords(Board, Player, NewBoard, Expected))));
+            (write('INVALID MOVE: That cell is not empty, please try again!\n\n'),
+            askCoords(Board, Player, NewBoard, Expected))))).
+
 
 askCoords(Board, Player, NewBoard, Expected) :-
-        manageRow(NewRow),
-        manageColumn(NewColumn),
-        write('\n'),
-        ColumnIndex is NewColumn - 1,
-        RowIndex is NewRow - 1,
-        ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
-        replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
-        invalidInput(Board, Player, NewBoard, Expected)).
+      manageRow(NewRow),
+      manageColumn(NewColumn),
+      write('\n'),
+      ColumnIndex is NewColumn - 1,
+      RowIndex is NewRow - 1,
+      checkMove(Board, Player, NewBoard, Expected, ColumnIndex, RowIndex).
 
-
-moveWorker(Board, 'Y', NewBoard) :-
+moveWorker(Board, 1, NewBoard) :-
         write('\n2. Choose worker current cell.\n'),
         askCoords(Board, empty, NoWorkerBoard, red),
         write('3. Choose worker new cell.\n'),
@@ -127,24 +150,40 @@ moveWorker(Board, 'Y', NewBoard) :-
         printBoard(NewBoard),
         write('\n4. Choose your cell.\n').
 
+<<<<<<< HEAD
 moveWorker(Board, 'N', NewBoard) :-
+=======
+moveWorker(Board, 0,NewBoard) :-
+>>>>>>> eace710531036b57b52b31d8098c702a94891e20
         NewBoard = Board,
         write('\n2. Choose your cell.\n').
 
 gameLoop(Board1) :- %mudar tambem
       write('\n------------------ PLAYER X -------------------\n\n'),
+<<<<<<< HEAD
       %write('1. Do you want to move a worker?(Y/N) '),
       %read(MoveWorkerBoolX),
       %moveWorker(Board1, MoveWorkerBoolX, Board2),
       moveWorker(Board1, 'N', Board2), %delete
+=======
+      write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
+      read(MoveWorkerBoolX),
+      moveWorker(Board1, MoveWorkerBoolX, Board2),
+>>>>>>> eace710531036b57b52b31d8098c702a94891e20
       askCoords(Board2, black, Board3, empty),
       printBoard(Board3),
       checkGameState(Board3, 0),
       write('\n------------------ PLAYER O -------------------\n\n'),
+<<<<<<< HEAD
       %write('1. Do you want to move a worker?(Y/N) '),
       %read(MoveWorkerBoolO),
       %moveWorker(Board3, MoveWorkerBoolO, Board4),
       moveWorker(Board3, 'N', Board4),
+=======
+      write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
+      read(MoveWorkerBoolO),
+      moveWorker(Board3, MoveWorkerBoolO, Board4),
+>>>>>>> eace710531036b57b52b31d8098c702a94891e20
       askCoords(Board4, white, Board5, empty),
       printBoard(Board5),
       gameLoop(Board5).

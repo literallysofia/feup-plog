@@ -53,19 +53,20 @@ letter(10, L) :- L='J'.
 letter(11, L) :- L='K'.
 
 printBoard(X) :-
-    write('  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10| 11|\n'),
-    write('--|---|---|---|---|---|---|---|---|---|---|---|\n'),
+    write('   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10| 11|\n'),
+    write('---|---|---|---|---|---|---|---|---|---|---|---|\n'),
     printMatrix(X, 1).
 
 printMatrix([], 12).
 
 printMatrix([Head|Tail], N) :-
     letter(N, L),
+    write(' '),
     write(L),
     N1 is N + 1,
     write(' | '),
     printLine(Head),
-    nl,
+    write('\n---|---|---|---|---|---|---|---|---|---|---|---|\n'),
     printMatrix(Tail, N1).
 
 printLine([]).
