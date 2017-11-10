@@ -86,7 +86,7 @@ isValidPosLines(Board, Row, Column, Res) :-
 
 %MOVER WORKER
 
-%FUNCAO QUE NAO FUNCIONA
+%FUNCAO QUE NAO FUNCIONA VERSAO 2
 askCoords(Board, Player, NewBoard, Expected) :-
       manageRow(NewRow),
       manageColumn(NewColumn),
@@ -94,43 +94,31 @@ askCoords(Board, Player, NewBoard, Expected) :-
       ColumnIndex is NewColumn - 1,
       RowIndex is NewRow - 1,
       ( %TODO: Meter noutra função
-      ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),(Player == empty, Expected == red)),
-            (replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard);
-            (write('INVALID MOVE: There is no worker in that cell, please try again!\n\n'),  %not working worker move
-            askCoords(Board, Player, NewBoard, Expected))));
-
-      ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected), (Player == red, Expected == empty)),
-            (replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard);
-            (write('INVALID MOVE: That cell is not empty, please try again!\n'),
-            askCoords(Board, Player, NewBoard, Expected))));
-
-      ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected), (Player == empty)),
-            (replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard);
-            (write('INVALID MOVE: That cell is not empty, please try again!\n\n'),
-            askCoords(Board, Player, NewBoard, Expected))));
-
-      ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected), (Player == white; Player == black)),
-            ((isValidPosLines(Board, RowIndex, ColumnIndex, ResIsValidPosLines), ResIsValidPosLines =:= 1),
-                  replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard);
-                  (write('INVALID MOVE: That cell is not within the workers lines of sight, please try again!\n\n'),
-                  askCoords(Board, Player, NewBoard, Expected)));
-            (write('INVALID MOVE: That cell is not empty, please try again!\n\n'),
-            askCoords(Board, Player, NewBoard, Expected)))
-      ).
-
-%FUNÇAO FUNCIONA
-/*askCoords(Board, Player, NewBoard, Expected) :-
-      manageRow(NewRow),
-      manageColumn(NewColumn),
-      write('\n'),
-      ColumnIndex is NewColumn - 1,
-      RowIndex is NewRow - 1,
-      ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected), (Player == red; Player == empty),
-            replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
-      (getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected), (Player == white; Player == black),
-            (isValidPosLines(Board, RowIndex, ColumnIndex, ResIsValidPosLines), ResIsValidPosLines =:= 1),
+      ((Player == empty, Expected == red),
+            ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
                   replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
-      invalidInput(Board,Player,NewBoard,Expected)).*/
+                  (write('INVALID MOVE: There is no worker in that cell, please try again!\n\n'),  %not working worker move
+                  askCoords(Board, Player, NewBoard, Expected))));
+      ((Player == red, Expected == empty),
+            ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
+                  replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
+                  (write('INVALID MOVE: That cell is not empty, please try again!\n\n'),
+                  askCoords(Board, Player, NewBoard, Expected))));
+      ((Player == empty),
+            ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
+                  replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
+                  (write('INVALID MOVE: That cell is not empty, please try again!\n\n'),
+                  askCoords(Board, Player, NewBoard, Expected))));
+
+      ((Player == white; Player == black),
+            ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
+                   ((isValidPosLines(Board, RowIndex, ColumnIndex, ResIsValidPosLines), ResIsValidPosLines =:= 1),
+                        replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard);
+                        (write('INVALID MOVE: That cell is not within the workers lines of sight, please try again!\n\n'),
+                        askCoords(Board, Player, NewBoard, Expected))));
+            (write('INVALID MOVE: That cell is not empty, please try again!\n\n'),
+            askCoords(Board, Player, NewBoard, Expected))))
+      ). 
 
 moveWorker(Board, 1, NewBoard) :-
         write('\n2. Choose worker current cell.\n'),
