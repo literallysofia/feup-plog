@@ -10,8 +10,38 @@ verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'O' ):-
       (Column =:= WorkerColumn - Index, Row =:= WorkerRow, Res is 1);
       ((WorkerColumnTemp is WorkerColumn - Index, getValueFromMatrix(Board, WorkerRow, WorkerColumnTemp, Value), Value \= empty, Res is 0),!);
       (Index < 12,
-      Index1 is Index +1,
+      Index1 is Index + 1,
       verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'O')).
+
+%NO
+verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'NO') :-
+      Res is 0.
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'NO' ):-
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn - Index, Res is 1); %NO
+      ((WorkerRowTemp is WorkerRow - Index, WorkerColumnTemp is WorkerColumn - Index, getValueFromMatrix(Board, WorkerRowTemp, WorkerColumnTemp, Value), Value \= empty, Res is 0),!);
+      (Index < 12,
+      Index1 is Index + 1,
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'NO')).
+
+%N
+verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'N') :-
+      Res is 0.
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'N' ):-
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn, Res is 1);
+      ((WorkerRowTemp is WorkerRow - Index, getValueFromMatrix(Board, WorkerRowTemp, WorkerColumn, Value), Value \= empty, Res is 0),!);
+      (Index < 12,
+      Index1 is Index + 1,
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'N')).
+
+%NE
+verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'NE') :-
+      Res is 0.
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'NE' ):-
+      (Row =:= WorkerRow - Index, Column =:= WorkerColumn + Index, Res is 1);
+      ((WorkerRowTemp is WorkerRow -Index, WorkerColumnTemp is WorkerColumn + Index, getValueFromMatrix(Board, WorkerRowTemp, WorkerColumnTemp, Value), Value \= empty, Res is 0),!);
+      (Index < 12,
+      Index1 is Index + 1,
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'NE')).
 
 %E
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'E') :-
@@ -20,8 +50,18 @@ verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'E' ):-
       (Column =:= WorkerColumn + Index, Row =:= WorkerRow, Res is 1);
       ((WorkerColumnTemp is WorkerColumn + Index, getValueFromMatrix(Board, WorkerRow, WorkerColumnTemp, Value), Value \= empty, Res is 0),!);
       (Index < 12,
-      Index1 is Index +1,
+      Index1 is Index + 1,
       verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'E')).
+
+%SE
+verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'SE') :-
+      Res is 0.
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'SE' ):-
+      (Row =:= WorkerRow + Index, Column =:= WorkerColumn + Index, Res is 1);
+      ((WorkerRowTemp is WorkerRow + Index, WorkerColumnTemp is WorkerColumn + Index, getValueFromMatrix(Board, WorkerRowTemp, WorkerColumnTemp, Value), Value \= empty, Res is 0),!);
+      (Index < 12,
+      Index1 is Index + 1,
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'SE')).
 
 %S
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'S') :-
@@ -33,41 +73,29 @@ verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'S'):-
       Index1 is Index + 1,
       verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'S')).
 
-%N
-verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'N') :-
-            Res is 0.
-verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'N' ):-
-      (Row =:= WorkerRow - Index, Column =:= WorkerColumn, Res is 1);
-      ((WorkerRowTemp is WorkerRow - Index, getValueFromMatrix(Board, WorkerRowTemp, WorkerColumn, Value), Value \= empty, Res is 0),!);
+%SO
+verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, 'SO') :-
+      Res is 0.
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'SO' ):-
+      (Row =:= WorkerRow + Index, Column =:= WorkerColumn - Index, Res is 1);
+      ((WorkerRowTemp is WorkerRow + Index, WorkerColumnTemp is WorkerColumn - Index, getValueFromMatrix(Board, WorkerRowTemp, WorkerColumnTemp, Value), Value \= empty, Res is 0),!);
       (Index < 12,
       Index1 is Index + 1,
-      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'N')).
-
-%FUNÇAO QUE NAO FUNCIONA
-isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Res) :-
-      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResN, 'N' ), ResN =:= 1, write('\nRESN '),write(ResN),Res is 1);
-      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResS, 'S' ), ResS =:= 1, write('\nRESS '),write(ResS),Res is 1);
-      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResE, 'E' ), ResE =:= 1, write('\nRESE '),write(ResE),Res is 1);
-      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResO, 'O' ), ResO =:= 1, write('\nRESO '),write(ResO),Res is 1);
-      Res is 0.
+      verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'SO')).
 
 
-%FUNÇAO QUE FUNCIONA
 %Res = 1 if that cell is in the worker lines, Res = 0 if it's not.
-/*isWorkerLines(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res) :-
+isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Res) :-
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResN, 'N' ), ResN =:= 1, write('\nRes N '),write(ResN),Res is 1);
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResNE, 'NE' ), ResNE =:= 1, write('\nRes NE '),write(ResNE),Res is 1);
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResE, 'E' ), ResE =:= 1, write('\nRes E '),write(ResE),Res is 1);
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResSE, 'SE' ), ResSE =:= 1, write('\nRes SE '),write(ResSE),Res is 1);
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResS, 'S' ), ResS =:= 1, write('\nRes S '),write(ResS),Res is 1);
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResSO, 'SO' ), ResSO =:= 1, write('\nRes SO '),write(ResSO),Res is 1);
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResO, 'O' ), ResO =:= 1, write('\nRes O '),write(ResO),Res is 1);
+      (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResNO, 'NO' ), ResNO =:= 1, write('\nRes NO '),write(ResNO),Res is 1);
       Res is 0.
-isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res) :-
-      (Row =:= WorkerRow + Index, Column =:= WorkerColumn, Res is 1); %S
-      (Row =:= WorkerRow - Index, Column =:= WorkerColumn, Res is 1); %N
-      (Column =:= WorkerColumn + Index, Row =:= WorkerRow, Res is 1); %E
-      (Column =:= WorkerColumn - Index, Row =:= WorkerRow, Res is 1); %O
-      (Row =:= WorkerRow + Index, Column =:= WorkerColumn + Index, Res is 1); %SE
-      (Row =:= WorkerRow - Index, Column =:= WorkerColumn - Index, Res is 1); %NO
-      (Row =:= WorkerRow + Index, Column =:= WorkerColumn - Index, Res is 1); %SO
-      (Row =:= WorkerRow - Index, Column =:= WorkerColumn + Index, Res is 1); %NE
-      Index < 12,
-      Index1 is Index + 1,
-      isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res).*/
+
 
 %Res = 1 that cell is valid, Res = 0 if not.
 isValidPosLines(Board, Row, Column, Res) :-
