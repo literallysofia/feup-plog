@@ -10,13 +10,13 @@
 - [ ] Computador VS Computador.
 
 #### Lógica de Jogo
-- [ ] Implementar isValidPosLines no askCoords
-- [ ] Limitar os raios até encontrar uma peça preta ou branca.
+- [ ] Implementar isValidPosLines e isWorkerLines no askCoords
 - [ ] Terminar o loop quando se ganha ou perde.
 - [x] Mover o worker.
 - [x] Verificação de células vazias.
 - [X] Saber os raios dos workers.
 - [X] Saber as posições dos workers
+- [X] Limitar os raios até encontrar uma peça preta ou branca.
 
 #### Menus
 - [ ] Ligar escolha de opção ao jogo em si.
