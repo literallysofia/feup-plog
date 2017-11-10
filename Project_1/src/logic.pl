@@ -3,6 +3,31 @@ invalidInput(Board, Player, NewBoard, Expected) :-
       write('INVALID INPUT: Cell not valid, please try again.\n'),
       askCoords(Board, Player, NewBoard, Expected).
 
+%experimentacao
+
+checkVictory(_NewBoard, 4) :-
+      write('You won the game!\n\n').
+
+checkVictory(NewBoard, Counter) :-
+      checkGameState(NewBoard, Counter).
+
+checkGameState(Board, Counter) :-
+      getPlayerPos(Board, PlayerRow1, PlayerColumn1),
+      replaceInMatrix(Board, PlayerRow1, PlayerColumn1, 'BLACK', NewBoard),
+      getPlayerPos(NewBoard, PlayerRow2, PlayerColumn2),
+      nl, write('pos 1: '),
+      write(PlayerColumn1),
+      nl, write('pos 2: '),
+      write(PlayerColumn2),
+      nl,
+      (
+            (PlayerRow1 =:= PlayerRow2, PlayerColumn1 =:= PlayerColumn2 - 1, Counter1 is Counter + 1, write('counter: '), write(Counter1), checkVictory(NewBoard, Counter1));
+            (PlayerColumn1 =\= PlayerColumn2 - 1, checkVictory(NewBoard, 0));
+            (nl)
+      ).
+      
+
+
 %Default
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, _Ray) :-
       Res is 0.
@@ -102,21 +127,24 @@ moveWorker(Board, 'Y', NewBoard) :-
         printBoard(NewBoard),
         write('\n4. Choose your cell.\n').
 
-moveWorker(Board, 'N',NewBoard) :-
+moveWorker(Board, 'N', NewBoard) :-
         NewBoard = Board,
         write('\n2. Choose your cell.\n').
 
-gameLoop(Board1) :-
+gameLoop(Board1) :- %mudar tambem
       write('\n------------------ PLAYER X -------------------\n\n'),
-      write('1. Do you want to move a worker?(Y/N) '),
-      read(MoveWorkerBoolX),
-      moveWorker(Board1, MoveWorkerBoolX, Board2),
+      %write('1. Do you want to move a worker?(Y/N) '),
+      %read(MoveWorkerBoolX),
+      %moveWorker(Board1, MoveWorkerBoolX, Board2),
+      moveWorker(Board1, 'N', Board2), %delete
       askCoords(Board2, black, Board3, empty),
       printBoard(Board3),
+      checkGameState(Board3, 0),
       write('\n------------------ PLAYER O -------------------\n\n'),
-      write('1. Do you want to move a worker?(Y/N) '),
-      read(MoveWorkerBoolO),
-      moveWorker(Board3, MoveWorkerBoolO, Board4),
+      %write('1. Do you want to move a worker?(Y/N) '),
+      %read(MoveWorkerBoolO),
+      %moveWorker(Board3, MoveWorkerBoolO, Board4),
+      moveWorker(Board3, 'N', Board4),
       askCoords(Board4, white, Board5, empty),
       printBoard(Board5),
       gameLoop(Board5).
@@ -134,5 +162,7 @@ addWorkers(InitialBoard, WorkersBoard) :-
 
 startGame :-
       initialBoard(InitialBoard),
-      addWorkers(InitialBoard, WorkersBoard),
-      gameLoop(WorkersBoard).
+      %addWorkers(InitialBoard, WorkersBoard),
+      %gameLoop(WorkersBoard).
+      printBoard(InitialBoard), %delete
+      gameLoop(InitialBoard). %delete 
