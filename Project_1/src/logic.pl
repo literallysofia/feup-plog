@@ -150,40 +150,22 @@ moveWorker(Board, 1, NewBoard) :-
         printBoard(NewBoard),
         write('\n4. Choose your cell.\n').
 
-<<<<<<< HEAD
-moveWorker(Board, 'N', NewBoard) :-
-=======
 moveWorker(Board, 0,NewBoard) :-
->>>>>>> eace710531036b57b52b31d8098c702a94891e20
         NewBoard = Board,
         write('\n2. Choose your cell.\n').
 
 gameLoop(Board1) :- %mudar tambem
       write('\n------------------ PLAYER X -------------------\n\n'),
-<<<<<<< HEAD
-      %write('1. Do you want to move a worker?(Y/N) '),
-      %read(MoveWorkerBoolX),
-      %moveWorker(Board1, MoveWorkerBoolX, Board2),
-      moveWorker(Board1, 'N', Board2), %delete
-=======
       write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
       read(MoveWorkerBoolX),
       moveWorker(Board1, MoveWorkerBoolX, Board2),
->>>>>>> eace710531036b57b52b31d8098c702a94891e20
       askCoords(Board2, black, Board3, empty),
       printBoard(Board3),
       checkGameState(Board3, 0),
       write('\n------------------ PLAYER O -------------------\n\n'),
-<<<<<<< HEAD
-      %write('1. Do you want to move a worker?(Y/N) '),
-      %read(MoveWorkerBoolO),
-      %moveWorker(Board3, MoveWorkerBoolO, Board4),
-      moveWorker(Board3, 'N', Board4),
-=======
       write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
       read(MoveWorkerBoolO),
       moveWorker(Board3, MoveWorkerBoolO, Board4),
->>>>>>> eace710531036b57b52b31d8098c702a94891e20
       askCoords(Board4, white, Board5, empty),
       printBoard(Board5),
       gameLoop(Board5).
@@ -201,7 +183,5 @@ addWorkers(InitialBoard, WorkersBoard) :-
 
 startGame :-
       initialBoard(InitialBoard),
-      %addWorkers(InitialBoard, WorkersBoard),
-      %gameLoop(WorkersBoard).
-      printBoard(InitialBoard), %delete
-      gameLoop(InitialBoard). %delete 
+      addWorkers(InitialBoard, WorkersBoard),
+      gameLoop(WorkersBoard).
