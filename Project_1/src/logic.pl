@@ -80,19 +80,25 @@ isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Res) :-
 isValidPosLines(Board, Row, Column, Res) :-
       getWorkersPos(Board, Worker1Row, Worker1Column, Worker2Row, Worker2Column),
       ((isWorkerLines(Board, Worker1Row, Worker1Column, Row, Column, ResIsWorkerLines1), ResIsWorkerLines1 =:= 1, Res is 1);
-       (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, ResIsWorkerLines2), ResIsWorkerLines2 =:= 1, Res is 1);
-       Res is 0).
+      (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, ResIsWorkerLines2), ResIsWorkerLines2 =:= 1, Res is 1);
+      Res is 0).
 
+
+%MOVER WORKER
+
+%FUNÇAO QUE NAO FUNCIONA
 askCoords(Board, Player, NewBoard, Expected) :-
-        manageRow(NewRow),
-        manageColumn(NewColumn),
-        write('\n'),
-        ColumnIndex is NewColumn - 1,
-        RowIndex is NewRow - 1,
-        ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
-        replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
-        invalidInput(Board, Player, NewBoard, Expected)).
-
+      manageRow(NewRow),
+      manageColumn(NewColumn),
+      write('\n'),
+      ColumnIndex is NewColumn - 1,
+      RowIndex is NewRow - 1,
+      ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected), (Player == red; Player == empty),
+            replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
+      (getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected), (Player == white; Player == black),
+            (isValidPosLines(Board, RowIndex, ColumnIndex, ResIsValidPosLines), ResIsValidPosLines =:= 1),
+                  replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
+      invalidInput(Board,Player,NewBoard,Expected)).
 
 moveWorker(Board, 'Y', NewBoard) :-
         write('\n2. Choose worker current cell.\n'),
