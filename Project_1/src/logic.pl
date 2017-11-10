@@ -83,21 +83,11 @@ isValidPosLines(Board, Row, Column, Res) :-
       (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, ResIsWorkerLines2), ResIsWorkerLines2 =:= 1, Res is 1);
       Res is 0).
 
-
-%MOVER WORKER
-
-%FUNCAO QUE NAO FUNCIONA VERSAO 2
-askCoords(Board, Player, NewBoard, Expected) :-
-      manageRow(NewRow),
-      manageColumn(NewColumn),
-      write('\n'),
-      ColumnIndex is NewColumn - 1,
-      RowIndex is NewRow - 1,
-      ( %TODO: Meter noutra função
-      ((Player == empty, Expected == red),
+checkMove(Board, Player, NewBoard, Expected, ColumnIndex, RowIndex):-
+      (((Player == empty, Expected == red),
             ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
                   replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
-                  (write('INVALID MOVE: There is no worker in that cell, please try again!\n\n'),  %not working worker move
+                  (write('INVALID MOVE: There is no worker in that cell, please try again!\n\n'),
                   askCoords(Board, Player, NewBoard, Expected))));
       ((Player == red, Expected == empty),
             ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
@@ -109,7 +99,6 @@ askCoords(Board, Player, NewBoard, Expected) :-
                   replaceInMatrix(Board, RowIndex, ColumnIndex, Player, NewBoard));
                   (write('INVALID MOVE: That cell is not empty, please try again!\n\n'),
                   askCoords(Board, Player, NewBoard, Expected))));
-
       ((Player == white; Player == black),
             ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
                    ((isValidPosLines(Board, RowIndex, ColumnIndex, ResIsValidPosLines), ResIsValidPosLines =:= 1),
@@ -117,8 +106,16 @@ askCoords(Board, Player, NewBoard, Expected) :-
                         (write('INVALID MOVE: That cell is not within the workers lines of sight, please try again!\n\n'),
                         askCoords(Board, Player, NewBoard, Expected))));
             (write('INVALID MOVE: That cell is not empty, please try again!\n\n'),
-            askCoords(Board, Player, NewBoard, Expected))))
-      ). 
+            askCoords(Board, Player, NewBoard, Expected))))).
+
+
+askCoords(Board, Player, NewBoard, Expected) :-
+      manageRow(NewRow),
+      manageColumn(NewColumn),
+      write('\n'),
+      ColumnIndex is NewColumn - 1,
+      RowIndex is NewRow - 1,
+      checkMove(Board, Player, NewBoard, Expected, ColumnIndex, RowIndex).
 
 moveWorker(Board, 1, NewBoard) :-
         write('\n2. Choose worker current cell.\n'),
