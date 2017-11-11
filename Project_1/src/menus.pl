@@ -13,7 +13,8 @@ manageInput(2) :-
     mainMenu.
 
 manageInput(3) :-
-    write('valid option!\n\n').
+    startGame('C','C'),
+    mainMenu.
 
 manageInput(4) :-
     write('valid option!\n\n').

@@ -219,6 +219,20 @@ addWorkers(InitialBoard, WorkersBoard, 'P', 'C') :-
       printComputerAddWorker(WorkerRowIndex, WorkerColumnIndex),
       printBoard(WorkersBoard).
 
+addWorkers(InitialBoard, WorkersBoard, 'C', 'C') :-
+      printBoard(InitialBoard),
+      write('\n----------------- COMPUTER X ------------------\n\n'),
+      generateWorkerMove(InitialBoard, WorkerRowIndex1, WorkerColumnIndex1),
+      replaceInMatrix(InitialBoard,  WorkerRowIndex1, WorkerColumnIndex1, red, Worker1Board),
+      printComputerAddWorker(WorkerRowIndex1, WorkerColumnIndex1),
+      printBoard(Worker1Board),
+      write('\n----------------- COMPUTER O ------------------\n\n'),
+      generateWorkerMove(Worker1Board, WorkerRowIndex2, WorkerColumnIndex2),
+      replaceInMatrix(Worker1Board,  WorkerRowIndex2, WorkerColumnIndex2, red, WorkersBoard),
+      printComputerAddWorker(WorkerRowIndex2, WorkerColumnIndex2),
+      printBoard(WorkersBoard).
+
+
 
 blackPlayerTurn(Board, NewBoard, 'P') :-
       write('\n------------------ PLAYER X -------------------\n\n'),
@@ -226,6 +240,14 @@ blackPlayerTurn(Board, NewBoard, 'P') :-
       manageMoveWorkerBool(MoveWorkerBoolX),
       moveWorker(Board, MoveWorkerBoolX, Board1),
       askCoords(Board1, black, NewBoard, empty),
+      printBoard(NewBoard).
+
+blackPlayerTurn(Board, NewBoard, 'C') :-
+      write('\n----------------- COMPUTER X ------------------\n\n'),
+      computerMoveWorkers(Board, Board1),
+      generatePlayerMove(Board1, NewRowIndex, NewColumnIndex),
+      replaceInMatrix(Board1,  NewRowIndex, NewColumnIndex, black, NewBoard),
+      printComputerMove(NewRowIndex, NewColumnIndex),
       printBoard(NewBoard).
 
 whitePlayerTurn(NewBoard, FinalBoard, 'P') :-
