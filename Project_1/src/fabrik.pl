@@ -7,5 +7,5 @@
 :- use_module(library(random)).
 
 fabrik :-
-      %mainMenu,
+      %mainMenu.
       startGame('PP').
