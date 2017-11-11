@@ -244,26 +244,14 @@ whitePlayerTurn(Board, FinalBoard, 'C') :-
       printComputerMove(NewRowIndex, NewColumnIndex),
       printBoard(FinalBoard).
 
-gameLoop(Board, 'P', 'P') :-
-      blackPlayerTurn(Board, NewBoard, 'P'),
+gameLoop(Board, Player1, Player2) :-
+      blackPlayerTurn(Board, NewBoard, Player1),
       (
             (checkGameState('black', NewBoard), write('\nThanks for playing!\n'));
-            (whitePlayerTurn(NewBoard, FinalBoard, 'P'),
+            (whitePlayerTurn(NewBoard, FinalBoard, Player2),
                   (
                         (checkGameState('white', FinalBoard), write('\nThanks for playing!\n'));
-                        (gameLoop(FinalBoard, 'P', 'P'))
-                  )
-            )
-      ).
-
-gameLoop(Board, 'P', 'C') :-
-      blackPlayerTurn(Board, NewBoard, 'P'),
-      (
-            (checkGameState('black', NewBoard), write('\nThanks for playing!\n'));
-            (whitePlayerTurn(NewBoard, FinalBoard, 'C'),
-                  (
-                        (checkGameState('white', FinalBoard), write('\nThanks for playing!\n'));
-                        (gameLoop(FinalBoard, 'P', 'C'))
+                        (gameLoop(FinalBoard, Player1, Player2))
                   )
             )
       ).
