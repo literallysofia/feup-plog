@@ -142,6 +142,35 @@ askCoords(Board, Player, NewBoard, Expected) :-
       RowIndex is NewRow - 1,
       checkMove(Board, Player, NewBoard, Expected, ColumnIndex, RowIndex).
 
+
+printComputerWorkerMove(WorkerRowIndex, WorkerColumnIndex, WorkerNewRowIndex, WorkerNewColumnIndex):-
+      WorkerRow is WorkerRowIndex + 1,
+      WorkerColumn is WorkerColumnIndex + 1,
+      WorkerNewRow is WorkerNewRowIndex + 1,
+      WorkerNewColumn is WorkerNewColumnIndex + 1,
+      letter(WorkerRow, WorkerRowLetter),
+      letter(WorkerNewRow, WorkerNewRowLetter),
+      write(' > Computer moved the worker in the cell [row: '), write(WorkerRowLetter), write(' column: '), write(WorkerColumn), write('] to the cell [row: '),  write(WorkerNewRowLetter), write(' column: '), write(WorkerNewColumn), write('].\n').
+
+printComputerMove(NewRowIndex, NewColumnIndex):-
+      NewRow is NewRowIndex + 1,
+      NewColumn is NewColumnIndex + 1,
+      letter(NewRow, RowLetter),
+      write(' > Computer added a piece in the cell [row: '), write(RowLetter), write(' column: '), write(NewColumn), write(']\n').
+
+printComputerAddWorker(WorkerRowIndex, WorkerColumnIndex):-
+      WorkerRow is WorkerRowIndex + 1,
+      WorkerColumn is WorkerColumnIndex + 1,
+      letter(WorkerRow, WorkerRowLetter),
+      write(' > Computer added a worker in the cell [row: '), write(WorkerRowLetter), write(' column: '), write(WorkerColumn), write(']\n').
+
+computerMoveWorkers(Board1, NewBoard):-
+      ((moveWorker(Board1, WorkerRowIndex, WorkerColumnIndex, WorkerNewRowIndex, WorkerNewColumnIndex, ResMoveWorker), ResMoveWorker =:= 1,
+      replaceInMatrix(Board1,  WorkerRowIndex, WorkerColumnIndex, empty, Board2), 
+      replaceInMatrix(Board2,  WorkerNewRowIndex, WorkerNewColumnIndex, red, NewBoard),
+      printComputerWorkerMove(WorkerRowIndex, WorkerColumnIndex, WorkerNewRowIndex, WorkerNewColumnIndex));
+      (NewBoard = Board1, write(' > The computer did not move any worker.\n'))).
+
 moveWorker(Board, 1, NewBoard) :-
         write('\n2. Choose worker current cell.\n'),
         askCoords(Board, empty, NoWorkerBoard, red),
@@ -155,7 +184,30 @@ moveWorker(Board, 0,NewBoard) :-
         write('\n2. Choose your cell.\n').
 
 
-gameLoop(Board1) :- %mudar tambem
+addWorkers(InitialBoard, WorkersBoard, 'P', 'P') :-
+      printBoard(InitialBoard),
+      write('\n------------------ PLAYER X -------------------\n\n'),
+      write('1. Choose worker 1 cell.\n'),
+      askCoords(InitialBoard, red, Worker1Board, empty),
+      printBoard(Worker1Board),
+      write('\n------------------ PLAYER O -------------------\n\n'),
+      write('1. Choose worker 2 cell.\n'),
+      askCoords(Worker1Board, red, WorkersBoard, empty),
+      printBoard(WorkersBoard).
+
+addWorkers(InitialBoard, WorkersBoard, 'P', 'C') :-
+      printBoard(InitialBoard),
+      write('\n------------------ PLAYER X -------------------\n\n'),
+      write('1. Choose worker 1 cell.\n'),
+      askCoords(InitialBoard, red, Worker1Board, empty),
+      printBoard(Worker1Board),
+      write('\n----------------- COMPUTER O ------------------\n\n'),
+      generateWorkerMove(Worker1Board, WorkerRowIndex, WorkerColumnIndex),
+      replaceInMatrix(Worker1Board,  WorkerRowIndex, WorkerColumnIndex, red, WorkersBoard),
+      printComputerAddWorker(WorkerRowIndex, WorkerColumnIndex),
+      printBoard(WorkersBoard).
+
+gameLoop(Board1,'P','P') :- %mudar tambem
       write('\n------------------ PLAYER X -------------------\n\n'),
       write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
       manageMoveWorkerBool(MoveWorkerBoolX),
@@ -169,25 +221,25 @@ gameLoop(Board1) :- %mudar tambem
       moveWorker(Board3, MoveWorkerBoolO, Board4),
       askCoords(Board4, white, Board5, empty),
       printBoard(Board5),
-      gameLoop(Board5).
+      gameLoop(Board5,'P','P').
 
-addWorkers(InitialBoard, WorkersBoard) :-
-      printBoard(InitialBoard),
+gameLoop(Board1,'P','C') :- %mudar tambem
       write('\n------------------ PLAYER X -------------------\n\n'),
-      write('1. Choose worker 1 cell.\n'),
-      askCoords(InitialBoard, red, Worker1Board, empty),
-      printBoard(Worker1Board),
-      write('\n------------------ PLAYER O -------------------\n\n'),
-      write('1. Choose worker 2 cell.\n'),
-      askCoords(Worker1Board, red, WorkersBoard, empty),
-      printBoard(WorkersBoard).
+      write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
+      manageMoveWorkerBool(MoveWorkerBoolX),
+      moveWorker(Board1, MoveWorkerBoolX, Board2),
+      askCoords(Board2, black, Board3, empty),
+      printBoard(Board3),
+      write('\n----------------- COMPUTER O ------------------\n\n'),
+      computerMoveWorkers(Board3, Board4),
+      generatePlayerMove(Board4, NewRowIndex, NewColumnIndex),
+      replaceInMatrix(Board4,  NewRowIndex, NewColumnIndex, white, Board5),
+      printComputerMove(NewRowIndex, NewColumnIndex),
+      printBoard(Board5),
+      gameLoop(Board5,'P','C').
 
-startGame('PP') :-
+
+startGame(Player1, Player2) :-
       initialBoard(InitialBoard),
-      addWorkers(InitialBoard, WorkersBoard),
-      gameLoop(WorkersBoard).
-
-startGame('PC') :-
-      testBoard(TestBoard),
-      printBoard(TestBoard),
-      generatePlayerMove(TestBoard).
+      addWorkers(InitialBoard, WorkersBoard, Player1, Player2),
+      gameLoop(WorkersBoard, Player1, Player2).

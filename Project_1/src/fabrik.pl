@@ -8,4 +8,4 @@
 
 fabrik :-
       %mainMenu,
-      startGame('PP').
+      startGame('P', 'P').
