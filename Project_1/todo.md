@@ -10,12 +10,12 @@
 - [x] Verificar input de COLUMN (1 - 11).
 
 #### Tipos de Jogo
-- [ ] Player VS Player.
+- [x] Player VS Player.
 - [ ] Player VS Computador.
 - [ ] Computador VS Computador.
 
 #### Lógica de Jogo
-- [ ] Terminar o loop quando se ganha ou perde.
+- [x] Terminar o loop quando se ganha ou perde.
 - [x] Mover o worker.
 - [x] Verificação de células vazias.
 - [x] Saber os raios dos workers.

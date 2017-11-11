@@ -5,10 +5,12 @@ mainMenu :-
     manageInput(Input).
 
 manageInput(1) :-
-    startGame('PP').
+    startGame('P','P'),
+    mainMenu.
 
 manageInput(2) :-
-    startGame('PC').
+    startGame('P','C'),
+    mainMenu.
 
 manageInput(3) :-
     write('valid option!\n\n').
@@ -16,7 +18,7 @@ manageInput(3) :-
 manageInput(4) :-
     write('valid option!\n\n').
 
-manageInput(5) :-
+manageInput(0) :-
     write('\nExiting...\n\n').
 
 manageInput(_Other) :-
@@ -46,13 +48,11 @@ printMainMenu :-
     write('|                          2. Player vs Computer                        |'),nl,
     write('|                                                                       |'),nl,
 	write('|                          3. Computer vs Computer                      |'),nl,
-	write('|                                                                       |'),nl,
-    write('|                          4. How to Play                               |'),nl,
     write('|                                                                       |'),nl,
-    write('|                          5. Exit                                      |'),nl,
+    write('|                          0. Exit                                      |'),nl,
     write('|                                                                       |'),nl,
     write('|                                                                       |'),nl,
     write(' _______________________________________________________________________ '),nl,nl,nl.
 
 askMenuOption :-
-    write('> Insert your option: ').
+    write('> Insert your option ').
