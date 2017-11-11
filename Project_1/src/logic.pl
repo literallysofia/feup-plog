@@ -3,15 +3,13 @@ invalidInput(Board, Player, NewBoard, Expected) :-
       write('INVALID INPUT: Cell not valid, please try again.\n'),
       askCoords(Board, Player, NewBoard, Expected).
 
-%experimentacao
-
 checkGameState(Player, Board) :-
       (
             (checkVictory(Player, 'Row', Board), write('You won!'));
             (checkVictory(Player, 'Column', Board), write('You won!'));
             (checkVictory(Player, 'DiagonalDown', Board), write('You won!'));
             (checkVictory(Player, 'DiagonalUp', Board), write('You won!'));
-            (nl)
+            (checkFullBoard(Board), write('Draw!'))
       ).
       
 checkVictory(X, 'Row', Board) :-
@@ -37,6 +35,10 @@ checkVictory(X, 'DiagonalUp', Board) :-
 	append(C3, [X|_], R3), append(C4, [X|_], R4), append(C5, [X|_], R5),
 	length(C1, M1), length(C2, M2), length(C3, M3), length(C4, M4), length(C5, M5),
 	M2 is M1-1, M3 is M2-1, M4 is M3-1, M5 is M4-1.
+
+checkFullBoard(Board) :-
+      \+ (append(_, [R|_], Board),
+	append(_, ['empty'|_], R)).
 
 %Default
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, _Ray) :-
@@ -160,26 +162,37 @@ moveWorker(Board, 1, NewBoard) :-
         printBoard(NewBoard),
         write('\n4. Choose your cell.\n').
 
-moveWorker(Board, 0,NewBoard) :-
+moveWorker(Board, 0, NewBoard) :-
         NewBoard = Board,
         write('\n2. Choose your cell.\n').
 
-gameLoop(Board1) :-
+blackPlayerTurn(Board, NewBoard) :-
       write('\n------------------ PLAYER X -------------------\n\n'),
-      write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
+      write('1. Do you want to move a worker? [0(No)/1(Yes)]'),
       manageMoveWorkerBool(MoveWorkerBoolX),
-      moveWorker(Board1, MoveWorkerBoolX, Board2),
-      askCoords(Board2, black, Board3, empty),
-      printBoard(Board3),
-      checkGameState('black', Board3),
+      moveWorker(Board, MoveWorkerBoolX, Board1),
+      askCoords(Board1, black, NewBoard, empty),
+      printBoard(NewBoard).
+
+whitePlayerTurn(NewBoard, FinalBoard) :-
       write('\n------------------ PLAYER O -------------------\n\n'),
-      write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
+      write('1. Do you want to move a worker? [0(No)/1(Yes)]'),
       manageMoveWorkerBool(MoveWorkerBoolO),
-      moveWorker(Board3, MoveWorkerBoolO, Board4),
-      askCoords(Board4, white, Board5, empty),
-      printBoard(Board5),
-      checkGameState('white', Board5),
-      gameLoop(Board5).
+      moveWorker(NewBoard, MoveWorkerBoolO, Board1),
+      askCoords(Board1, white, FinalBoard, empty),
+      printBoard(FinalBoard).
+
+gameLoop(Board) :-
+      blackPlayerTurn(Board, NewBoard),
+      (
+            (checkGameState('black', NewBoard), write('\nThanks for playing!\n'));
+            (whitePlayerTurn(NewBoard, FinalBoard),
+                  (
+                        (checkGameState('white', FinalBoard), write('\nThanks for playing!\n'));
+                        (gameLoop(FinalBoard))
+                  )
+            )
+      ).
 
 addWorkers(InitialBoard, WorkersBoard) :-
       printBoard(InitialBoard),
