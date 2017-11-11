@@ -5,10 +5,10 @@ mainMenu :-
     manageInput(Input).
 
 manageInput(1) :-
-    write('valid option!\n\n').
+    startGame('PP').
 
 manageInput(2) :-
-    write('valid option!\n\n').
+    startGame('PC').
 
 manageInput(3) :-
     write('valid option!\n\n').

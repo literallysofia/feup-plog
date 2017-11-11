@@ -182,7 +182,12 @@ addWorkers(InitialBoard, WorkersBoard) :-
       askCoords(Worker1Board, red, WorkersBoard, empty),
       printBoard(WorkersBoard).
 
-startGame :-
+startGame('PP') :-
       initialBoard(InitialBoard),
       addWorkers(InitialBoard, WorkersBoard),
       gameLoop(WorkersBoard).
+
+startGame('PC') :-
+      testBoard(TestBoard),
+      printBoard(TestBoard),
+      generatePlayerMove(TestBoard).

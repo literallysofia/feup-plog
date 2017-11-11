@@ -53,6 +53,8 @@ letter(10, L) :- L='J'.
 letter(11, L) :- L='K'.
 
 printBoard(X) :-
+    %write('\33\[2J'), %to clear screen
+    nl,
     write('   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10| 11|\n'),
     write('---|---|---|---|---|---|---|---|---|---|---|---|\n'),
     printMatrix(X, 1).
