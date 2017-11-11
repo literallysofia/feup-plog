@@ -154,17 +154,18 @@ moveWorker(Board, 0,NewBoard) :-
         NewBoard = Board,
         write('\n2. Choose your cell.\n').
 
+
 gameLoop(Board1) :- %mudar tambem
       write('\n------------------ PLAYER X -------------------\n\n'),
       write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
-      read(MoveWorkerBoolX),
+      manageMoveWorkerBool(MoveWorkerBoolX),
       moveWorker(Board1, MoveWorkerBoolX, Board2),
       askCoords(Board2, black, Board3, empty),
       printBoard(Board3),
       checkGameState(Board3, 0),
       write('\n------------------ PLAYER O -------------------\n\n'),
       write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
-      read(MoveWorkerBoolO),
+      manageMoveWorkerBool(MoveWorkerBoolO),
       moveWorker(Board3, MoveWorkerBoolO, Board4),
       askCoords(Board4, white, Board5, empty),
       printBoard(Board5),

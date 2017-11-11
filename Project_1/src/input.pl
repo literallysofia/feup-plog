@@ -89,3 +89,18 @@ validateColumn(_Column, NewColumn) :-
     write('ERROR: That column is not valid!\n\n'),
     readColumn(Input),
     validateColumn(Input, NewColumn).
+
+manageMoveWorkerBool(NewMoveWorkerBool):-
+      read(MoveWorkerBool),
+      validateMoveWorkerBool(MoveWorkerBool, NewMoveWorkerBool).
+
+validateMoveWorkerBool(1, NewMoveWorkerBool) :-
+    NewMoveWorkerBool = 1.
+
+validateMoveWorkerBool(0, NewMoveWorkerBool) :-
+    NewMoveWorkerBool = 0.
+
+validateMoveWorkerBool(_Bool, NewMoveWorkerBool) :-
+    write('\nERROR: That answer is not valid, please try again![0(No)/1(Yes)]'),
+    read(Input),
+    validateMoveWorkerBool(Input, NewMoveWorkerBool).
