@@ -5,28 +5,38 @@ invalidInput(Board, Player, NewBoard, Expected) :-
 
 %experimentacao
 
-checkVictory(_NewBoard, 4) :-
-      write('You won the game!\n\n').
-
-checkVictory(NewBoard, Counter) :-
-      checkGameState(NewBoard, Counter).
-
-checkGameState(Board, Counter) :-
-      getPlayerPos(Board, PlayerRow1, PlayerColumn1),
-      replaceInMatrix(Board, PlayerRow1, PlayerColumn1, 'BLACK', NewBoard),
-      getPlayerPos(NewBoard, PlayerRow2, PlayerColumn2),
-      nl, write('pos 1: '),
-      write(PlayerColumn1),
-      nl, write('pos 2: '),
-      write(PlayerColumn2),
-      nl,
+checkGameState(Player, Board) :-
       (
-            (PlayerRow1 =:= PlayerRow2, PlayerColumn1 =:= PlayerColumn2 - 1, Counter1 is Counter + 1, write('counter: '), write(Counter1), checkVictory(NewBoard, Counter1));
-            (PlayerColumn1 =\= PlayerColumn2 - 1, checkVictory(NewBoard, 0));
+            (checkVictory(Player, 'Row', Board), write('You won!'));
+            (checkVictory(Player, 'Column', Board), write('You won!'));
+            (checkVictory(Player, 'DiagonalDown', Board), write('You won!'));
+            (checkVictory(Player, 'DiagonalUp', Board), write('You won!'));
             (nl)
       ).
       
+checkVictory(X, 'Row', Board) :-
+      append(_, [R|_], Board),
+      append(_, [X,X,X,X,X|_], R).
 
+checkVictory(X, 'Column', Board) :-
+      append(_, [R1,R2,R3,R4,R5|_], Board),
+	append(C1, [X|_], R1), append(C2, [X|_], R2),
+	append(C3, [X|_], R3), append(C4, [X|_], R4), append(C5, [X|_], R5),
+	length(C1, M), length(C2, M), length(C3, M), length(C4, M), length(C5, M).
+
+checkVictory(X, 'DiagonalDown', Board) :-
+      append(_, [R1,R2,R3,R4,R5|_], Board),
+	append(C1, [X|_], R1), append(C2, [X|_], R2),
+	append(C3, [X|_], R3), append(C4, [X|_], R4), append(C5, [X|_], R5),
+	length(C1, M1), length(C2, M2), length(C3, M3), length(C4, M4), length(C5, M5),
+	M2 is M1+1, M3 is M2+1, M4 is M3+1, M5 is M4+1.
+
+checkVictory(X, 'DiagonalUp', Board) :-
+      append(_, [R1,R2,R3,R4,R5|_], Board),
+	append(C1, [X|_], R1), append(C2, [X|_], R2),
+	append(C3, [X|_], R3), append(C4, [X|_], R4), append(C5, [X|_], R5),
+	length(C1, M1), length(C2, M2), length(C3, M3), length(C4, M4), length(C5, M5),
+	M2 is M1-1, M3 is M2-1, M4 is M3-1, M5 is M4-1.
 
 %Default
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, _Ray) :-
@@ -154,21 +164,21 @@ moveWorker(Board, 0,NewBoard) :-
         NewBoard = Board,
         write('\n2. Choose your cell.\n').
 
-
-gameLoop(Board1) :- %mudar tambem
+gameLoop(Board1) :-
       write('\n------------------ PLAYER X -------------------\n\n'),
       write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
       manageMoveWorkerBool(MoveWorkerBoolX),
       moveWorker(Board1, MoveWorkerBoolX, Board2),
       askCoords(Board2, black, Board3, empty),
       printBoard(Board3),
-      checkGameState(Board3, 0),
+      checkGameState('black', Board3),
       write('\n------------------ PLAYER O -------------------\n\n'),
       write('1. Do you want to move a worker?[0(No)/1(Yes)]'),
       manageMoveWorkerBool(MoveWorkerBoolO),
       moveWorker(Board3, MoveWorkerBoolO, Board4),
       askCoords(Board4, white, Board5, empty),
       printBoard(Board5),
+      checkGameState('white', Board5),
       gameLoop(Board5).
 
 addWorkers(InitialBoard, WorkersBoard) :-
