@@ -1,4 +1,9 @@
 ## TODO
+
+### Geral
+- [ ] Comentar o código.
+- [ ] Relatório.
+
 #### Verificação de Inputs
 - [x] Verificar input dos menus.
 - [x] Verificar input de ROW (A - K).
@@ -19,6 +24,12 @@
 - [x] Implementar isValidPosLines e isWorkerLines no askCoords.
 - [x] Melhor print de celula inválida.
 - [x] Fazer uma funçao de input invalido em vez de estar no askCoords.
+
+### Player VS Computer
+- [ ] Gerar yes ou no aleatoriamente.
+- [ ] Escolher worker aleatório.
+- [ ] Escolher nova célula aleatória do worker.
+- [x] Escolher célula aleatória válida.
 
 #### Menus
 - [ ] Ligar escolha de opção ao jogo em si.
