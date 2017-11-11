@@ -26,9 +26,10 @@
 - [x] Fazer uma funçao de input invalido em vez de estar no askCoords.
 
 ### Player VS Computer
-- [ ] Gerar yes ou no aleatoriamente.
-- [ ] Escolher worker aleatório.
-- [ ] Escolher nova célula aleatória do worker.
+- [ ] Integrar bot no ciclo de jogo.
+- [x] Gerar yes ou no aleatoriamente.
+- [x] Escolher worker aleatório.
+- [x] Escolher nova célula aleatória do worker.
 - [x] Escolher célula aleatória válida.
 
 #### Menus
