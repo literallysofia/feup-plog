@@ -196,10 +196,11 @@ printComputerAddWorker(WorkerRowIndex, WorkerColumnIndex):-
 
 computerMoveWorkers(Board1, NewBoard):-
       ((moveWorker(Board1, WorkerRowIndex, WorkerColumnIndex, WorkerNewRowIndex, WorkerNewColumnIndex, ResMoveWorker), ResMoveWorker =:= 1,
+      sleep(1),
       replaceInMatrix(Board1,  WorkerRowIndex, WorkerColumnIndex, empty, Board2), 
       replaceInMatrix(Board2,  WorkerNewRowIndex, WorkerNewColumnIndex, red, NewBoard),
       printComputerWorkerMove(WorkerRowIndex, WorkerColumnIndex, WorkerNewRowIndex, WorkerNewColumnIndex));
-      (NewBoard = Board1, write(' > The computer did not move any worker.\n'))).
+      (NewBoard = Board1, sleep(1), write(' > Computer did not move any worker.\n'))).
 
 moveWorker(Board, 1, NewBoard) :-
         write('\n2. Choose worker current cell.\n'),
@@ -233,6 +234,7 @@ addWorkers(InitialBoard, WorkersBoard, 'P', 'C') :-
       printBoard(Worker1Board),
       write('\n----------------- COMPUTER O ------------------\n\n'),
       generateWorkerMove(Worker1Board, WorkerRowIndex, WorkerColumnIndex),
+      sleep(1),
       replaceInMatrix(Worker1Board,  WorkerRowIndex, WorkerColumnIndex, red, WorkersBoard),
       printComputerAddWorker(WorkerRowIndex, WorkerColumnIndex),
       printBoard(WorkersBoard).
@@ -241,11 +243,13 @@ addWorkers(InitialBoard, WorkersBoard, 'C', 'C') :-
       printBoard(InitialBoard),
       write('\n----------------- COMPUTER X ------------------\n\n'),
       generateWorkerMove(InitialBoard, WorkerRowIndex1, WorkerColumnIndex1),
+      sleep(1),
       replaceInMatrix(InitialBoard,  WorkerRowIndex1, WorkerColumnIndex1, red, Worker1Board),
       printComputerAddWorker(WorkerRowIndex1, WorkerColumnIndex1),
       printBoard(Worker1Board),
       write('\n----------------- COMPUTER O ------------------\n\n'),
       generateWorkerMove(Worker1Board, WorkerRowIndex2, WorkerColumnIndex2),
+      sleep(1),
       replaceInMatrix(Worker1Board,  WorkerRowIndex2, WorkerColumnIndex2, red, WorkersBoard),
       printComputerAddWorker(WorkerRowIndex2, WorkerColumnIndex2),
       printBoard(WorkersBoard).
