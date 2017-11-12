@@ -42,6 +42,9 @@ checkValidSpots(Board, Row, Column, Result) :- % 0 é nao existir espacos, 1 exi
                   (Res =:=1 , Result is 1)))
       ), !.
 
+/*Verifica se a célula está na linha de visão do worker. Foi feito o overload 
+deste predicado para cada um dos sentidos com o intuito do código se tornar mais
+percetível.*/
 %Default
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, _Ray) :-
       Res is 0.
@@ -102,6 +105,8 @@ verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res, 'SO' ):-
       Index1 is Index + 1,
       verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'SO')).
 
+/*Verifica se a célula (Row, Column) está nalguma das linhas de visão do worker 
+(WorkerRow, WorkerColumn) com a ajuda do predicado verifyLine.*/
 %Res = 1 if that cell is in the worker lines, Res = 0 if it's not.
 isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Res) :-
       (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResN, 'N' ), ResN =:= 1, Res is 1);
@@ -114,11 +119,16 @@ isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Res) :-
       (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResNO, 'NO' ), ResNO =:= 1, Res is 1);
       Res is 0.
 
+/*Verifica se a célula (Row, Column) está vazia recorrendo à chamadas ao predicado 
+getValueFromMatrix.*/
 isEmptyCell(Board, Row, Column, Res) :-
     ((getValueFromMatrix(Board, Row, Column, Value), Value == empty, !, 
     Res is 1);
     Res is 0).
 
+/*Vai buscar as posições dos workers com a ajuda do predicado getWorkersPos e 
+verifica se a célula (Row, Column) está na linha de visão de pelo menos um dos
+workers.*/
 %Res = 1 that cell is valid, Res = 0 if not.
 isValidPosLines(Board, Row, Column, Res) :-
       (
@@ -130,6 +140,14 @@ isValidPosLines(Board, Row, Column, Res) :-
             (Res is 0)
       ).
 
+/*É chamado para verificar todas as jogadas (tanto do jogador, como do worker) 
+recorrendo ao predicado isValidPosLines e  getValueFromMatrix. Este ultimo serve
+para verificar se naquela célula do tabuleiro está o conteúdo pretendido 
+(Expected). Por exemplo, se for para  adicionar uma peça, o conteúdo pretendido
+é ‘empty’, mas caso seja para escolher o worker a mover, o conteúdo pretendido 
+vai ser ‘red’. Se não for possível fazer o movimento, este predicado chama o 
+write que informa o jogador qual a razão da falha, pedindo umas novas 
+coordenadas.*/
 checkMove(Board, Player, NewBoard, Expected, ColumnIndex, RowIndex):-
       (((Player == empty, Expected == red),
             ((getValueFromMatrix(Board, RowIndex, ColumnIndex, Expected),
