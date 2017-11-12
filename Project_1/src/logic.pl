@@ -1,8 +1,3 @@
-%TODO: melhorar
-invalidInput(Board, Player, NewBoard, Expected) :-
-      write('INVALID INPUT: Cell not valid, please try again.\n'),
-      askCoords(Board, Player, NewBoard, Expected).
-
 checkGameState(Player, Board) :-
       (
             (checkVictory(Player, 'Row', Board), write('You won!'));
@@ -37,9 +32,6 @@ checkVictory(X, 'DiagonalUp', Board) :-
 	length(C1, M1), length(C2, M2), length(C3, M3), length(C4, M4), length(C5, M5),
 	M2 is M1-1, M3 is M2-1, M4 is M3-1, M5 is M4-1.
 
-checkFullBoard(Board) :-
-      \+ (append(_, [R|_], Board),
-	append(_, ['empty'|_], R)).
 
 checkValidSpots(Board, Row, Column, Result) :- % 0 é nao existir espacos, 1 existe
       (

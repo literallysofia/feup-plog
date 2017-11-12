@@ -46,3 +46,7 @@ getWorkersPos(Board, WorkerRow1, WorkerColumn1, WorkerRow2, WorkerColumn2) :-
         getWorkersPosRow(Board,Value, 0,0, WorkerRow1, WorkerColumn1),
         replaceInMatrix(Board, WorkerRow1, WorkerColumn1, 'RED', NewBoard), %substituir worker1 por RED para nao ser considerado quando  procurar worker2.
         getWorkersPosRow(NewBoard,Value, 0,0, WorkerRow2, WorkerColumn2).
+
+checkFullBoard(Board) :-
+      \+ (append(_, [R|_], Board),
+	append(_, ['empty'|_], R)).
