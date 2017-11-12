@@ -12,29 +12,6 @@ initialBoard([
 [empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty]
 ]).
 
-%TODO: delete
-testBoard([
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,white,empty,black,empty,black,empty,empty,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,black,empty,empty,red,empty,empty,empty,white,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,black,empty,empty,empty,empty,empty,black,empty,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,white,empty,empty,empty,empty,empty,empty],
-[empty,red,empty,empty,empty,empty,empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,empty,empty,empty,empty,empty,empty,empty]
-]).
-
-testMiniBoard([
-[empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,empty],
-[empty,empty,red,empty,empty],
-[empty,empty,empty,empty,empty],
-[empty,empty,empty,empty,empty]
-]).
-
 symbol(empty,S) :- S='.'.
 symbol(black,S) :- S='X'.
 symbol(white,S) :- S='O'.
@@ -53,7 +30,6 @@ letter(10, L) :- L='J'.
 letter(11, L) :- L='K'.
 
 printBoard(X) :-
-    %write('\33\[2J'), %to clear screen
     nl,
     write('   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10| 11|\n'),
     write('---|---|---|---|---|---|---|---|---|---|---|---|\n'),
