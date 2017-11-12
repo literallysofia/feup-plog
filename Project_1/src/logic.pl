@@ -59,10 +59,13 @@ write('\niteracao: '), write(Row), write(' | '), write(Column), write(' info: ')
       (
             (Column =:= 11, Row1 is Row + 1, checkValidSpots(Board, Row1, 0, Result));
             (Row =:= 11, Result is 0);
-            (isValidPosLines(Board, Row, Column, Res), write(Res), Column1 is Column+1, checkValidSpots(Board, Row, Column1, Result))
+            ((isValidPosLines(Board, Row, Column, Res), write(' RES 1st: '), write(Res)), 
+                  ((Res=:=0, write(' RES 0'), Column1 is Column+1, checkValidSpots(Board, Row, Column1, Result));
+                  (Res=:=1, write(' RES 1'), Result is 1)))
+      
             %(isValidPosLines(Board, Row, Column, Res), Res =:= 0, write(' sou 0:'), write(Res), Column1 is Column+1, checkValidSpots(Board, Row, Column1, Result));
             %(isValidPosLines(Board, Row, Column, Res), Res =:= 1, write(' sou 1:'),write(Res), Column1 is Column+1, checkValidSpots(Board, Row, Column1, Result))
-      ).
+      ), !.
 
 %Default
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, _Ray) :-
