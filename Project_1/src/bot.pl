@@ -3,11 +3,6 @@ verifyRandomMove(Board, Row, Column, Res):-
     Res is 1);
     Res is 0).
 
-isEmptyCell(Board, Row, Column, Res) :-
-    ((getValueFromMatrix(Board, Row, Column, Value), Value == empty, !, 
-    Res is 1);
-    Res is 0).
-
 generatePlayerMove(Board, Row, Column):-
     random(0,11,RandomRow),
     random(0,11,RandomColumn),

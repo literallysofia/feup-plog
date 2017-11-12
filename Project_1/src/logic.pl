@@ -9,7 +9,7 @@ checkGameState(Player, Board) :-
             (checkVictory(Player, 'Column', Board), write('You won!'));
             (checkVictory(Player, 'DiagonalDown', Board), write('You won!'));
             (checkVictory(Player, 'DiagonalUp', Board), write('You won!'));
-            %(checkFullBoard(Board), write('Woops, no more space left! It is a draw!'));
+            (checkFullBoard(Board), write('Woops, no more space left! It is a draw!'));
             (checkValidSpots(Board, 0, 0, Result), Result =:= 0, write('Woops, no more space left! It is a draw!'))
       ).
       
@@ -41,30 +41,13 @@ checkFullBoard(Board) :-
       \+ (append(_, [R|_], Board),
 	append(_, ['empty'|_], R)).
 
-checkValidSpotss(Board, Row, Column, Result) :- % 0 é nao existir espacos, 1 existe TENTATIVA
-      %write(Row), write(' | '), write(Column), nl,
-      (
-            (Column =:= 11, Row1 is Row + 1, checkValidSpots(Board, Row1, 0, Result));
-            (Row =:= 11, Result is 0);
-            (isValidPosLines(Board, Row, Column, Res), write('\nRES: '), write(Res), nl,
-                  (
-                        (Res =:= 0, Column1 is Column + 1, checkValidSpots(Board, Row, Column1, Result));
-                        (Res =:= 1, Result is 1, write('heyyy'))
-                  )
-            )
-      ).
-
 checkValidSpots(Board, Row, Column, Result) :- % 0 é nao existir espacos, 1 existe
-write('\niteracao: '), write(Row), write(' | '), write(Column), write(' info: '),
       (
             (Column =:= 11, Row1 is Row + 1, checkValidSpots(Board, Row1, 0, Result));
             (Row =:= 11, Result is 0);
-            ((isValidPosLines(Board, Row, Column, Res), write(' RES 1st: '), write(Res)), 
-                  ((Res=:=0, write(' RES 0'), Column1 is Column+1, checkValidSpots(Board, Row, Column1, Result));
-                  (Res=:=1, write(' RES 1'), Result is 1)))
-      
-            %(isValidPosLines(Board, Row, Column, Res), Res =:= 0, write(' sou 0:'), write(Res), Column1 is Column+1, checkValidSpots(Board, Row, Column1, Result));
-            %(isValidPosLines(Board, Row, Column, Res), Res =:= 1, write(' sou 1:'),write(Res), Column1 is Column+1, checkValidSpots(Board, Row, Column1, Result))
+            ((isValidPosLines(Board, Row, Column, Res)), 
+                  ((Res =:= 0, Column1 is Column + 1, checkValidSpots(Board, Row, Column1, Result));
+                  (Res =:=1 , Result is 1)))
       ), !.
 
 %Default
@@ -139,13 +122,21 @@ isWorkerLines(Board, WorkerRow, WorkerColumn, Row, Column, Res) :-
       (verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,1, ResNO, 'NO' ), ResNO =:= 1, Res is 1);
       Res is 0.
 
+isEmptyCell(Board, Row, Column, Res) :-
+    ((getValueFromMatrix(Board, Row, Column, Value), Value == empty, !, 
+    Res is 1);
+    Res is 0).
 
 %Res = 1 that cell is valid, Res = 0 if not.
 isValidPosLines(Board, Row, Column, Res) :-
-      getWorkersPos(Board, Worker1Row, Worker1Column, Worker2Row, Worker2Column),
-      ((isWorkerLines(Board, Worker1Row, Worker1Column, Row, Column, ResIsWorkerLines1), ResIsWorkerLines1 =:= 1, Res is 1);
-      (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, ResIsWorkerLines2), ResIsWorkerLines2 =:= 1, Res is 1);
-      Res is 0).
+      (
+            (isEmptyCell(Board, Row, Column, Res), Res =:= 1,
+                  (getWorkersPos(Board, Worker1Row, Worker1Column, Worker2Row, Worker2Column),
+                  ((isWorkerLines(Board, Worker1Row, Worker1Column, Row, Column, ResIsWorkerLines1), ResIsWorkerLines1 =:= 1, Res is 1);
+                  (isWorkerLines(Board, Worker2Row, Worker2Column, Row, Column, ResIsWorkerLines2), ResIsWorkerLines2 =:= 1, Res is 1);
+                  Res is 0)));
+            (Res is 0)
+      ).
 
 checkMove(Board, Player, NewBoard, Expected, ColumnIndex, RowIndex):-
       (((Player == empty, Expected == red),
