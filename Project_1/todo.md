@@ -11,8 +11,8 @@
 
 #### Tipos de Jogo
 - [x] Player VS Player.
-- [ ] Player VS Computador.
-- [ ] Computador VS Computador.
+- [x] Player VS Computador.
+- [x] Computador VS Computador.
 
 #### Lógica de Jogo
 - [x] Terminar o loop quando se ganha ou perde.
@@ -26,12 +26,12 @@
 - [x] Fazer uma funçao de input invalido em vez de estar no askCoords.
 
 ### Player VS Computer
-- [ ] Integrar bot no ciclo de jogo.
+- [x] Integrar bot no ciclo de jogo.
 - [x] Gerar yes ou no aleatoriamente.
 - [x] Escolher worker aleatório.
 - [x] Escolher nova célula aleatória do worker.
 - [x] Escolher célula aleatória válida.
 
 #### Menus
-- [ ] Ligar escolha de opção ao jogo em si.
+- [x] Ligar escolha de opção ao jogo em si.
 - [x] Menu principal: Player/Player, Player/Computador, Computador/Computador.
