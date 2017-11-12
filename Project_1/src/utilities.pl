@@ -46,24 +46,3 @@ getWorkersPos(Board, WorkerRow1, WorkerColumn1, WorkerRow2, WorkerColumn2) :-
         getWorkersPosRow(Board,Value, 0,0, WorkerRow1, WorkerColumn1),
         replaceInMatrix(Board, WorkerRow1, WorkerColumn1, 'RED', NewBoard), %substituir worker1 por RED para nao ser considerado quando  procurar worker2.
         getWorkersPosRow(NewBoard,Value, 0,0, WorkerRow2, WorkerColumn2).
-
-%experimentacao
-
-getPLayerPosColumn(Board, Value, Row, Column, PlayerRow, PlayerColumn) :-
-        (getValueFromMatrix(Board, Row, Column, Value),
-        PlayerRow = Row, PlayerColumn = Column);
-        (Column < 11,
-        Column1 is Column + 1,
-        getPLayerPosColumn(Board, Value, Row, Column1, PlayerRow, PlayerColumn)).
-
-getPLayerPosRow(Board, Value, Row, Column, PlayerRow, PlayerColumn) :-
-        getPLayerPosColumn(Board, Value, Row, Column, PlayerRow, PlayerColumn);
-        (Row < 11,
-        Row1 is Row + 1,
-        getPLayerPosRow(Board, Value, Row1, Column, PlayerRow, PlayerColumn)).
-
-getPlayerPos(Board, PlayerRow, PlayerColumn) :-
-        Value = black,
-        (getPLayerPosRow(Board, Value, 0, 0, PlayerRow, PlayerColumn));
-        PlayerRow is 404,
-        PlayerColumn is 404.

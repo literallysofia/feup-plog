@@ -9,7 +9,8 @@ checkGameState(Player, Board) :-
             (checkVictory(Player, 'Column', Board), write('You won!'));
             (checkVictory(Player, 'DiagonalDown', Board), write('You won!'));
             (checkVictory(Player, 'DiagonalUp', Board), write('You won!'));
-            (checkFullBoard(Board), write('Draw!'))
+            %(checkFullBoard(Board), write('Woops, no more space left! It is a draw!'));
+            (checkValidSpots(Board, 0, 0, Result), Result =:= 0, write('Woops, no more space left! It is a draw!'))
       ).
       
 checkVictory(X, 'Row', Board) :-
@@ -40,60 +41,83 @@ checkFullBoard(Board) :-
       \+ (append(_, [R|_], Board),
 	append(_, ['empty'|_], R)).
 
+checkValidSpotss(Board, Row, Column, Result) :- % 0 é nao existir espacos, 1 existe TENTATIVA
+      %write(Row), write(' | '), write(Column), nl,
+      (
+            (Column =:= 11, Row1 is Row + 1, checkValidSpots(Board, Row1, 0, Result));
+            (Row =:= 11, Result is 0);
+            (isValidPosLines(Board, Row, Column, Res), write('\nRES: '), write(Res), nl,
+                  (
+                        (Res =:= 0, Column1 is Column + 1, checkValidSpots(Board, Row, Column1, Result));
+                        (Res =:= 1, Result is 1, write('heyyy'))
+                  )
+            )
+      ).
+
+checkValidSpots(Board, Row, Column, Result) :- % 0 é nao existir espacos, 1 existe
+write('\niteracao: '), write(Row), write(' | '), write(Column), write(' info: '),
+      (
+            (Column =:= 11, Row1 is Row + 1, checkValidSpots(Board, Row1, 0, Result));
+            (Row =:= 11, Result is 0);
+            (isValidPosLines(Board, Row, Column, Res), write(Res), Column1 is Column+1, checkValidSpots(Board, Row, Column1, Result))
+            %(isValidPosLines(Board, Row, Column, Res), Res =:= 0, write(' sou 0:'), write(Res), Column1 is Column+1, checkValidSpots(Board, Row, Column1, Result));
+            %(isValidPosLines(Board, Row, Column, Res), Res =:= 1, write(' sou 1:'),write(Res), Column1 is Column+1, checkValidSpots(Board, Row, Column1, Result))
+      ).
+
 %Default
 verifyLine(_Board, _WorkerRow, _WorkerColumn, _Row, _Column, 12, Res, _Ray) :-
       Res is 0.
 %O
-verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'O' ):-
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res, 'O' ):-
       (Column =:= WorkerColumn - Index, Row =:= WorkerRow, Res is 1);
       ((ColumnTemp is WorkerColumn - Index, getValueFromMatrix(Board, WorkerRow, ColumnTemp, Value), Value \= empty, Res is 0),!);
       (Index < 12,
       Index1 is Index + 1,
       verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'O')).
 %NO
-verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'NO' ):-
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res, 'NO' ):-
       (Row =:= WorkerRow - Index, Column =:= WorkerColumn - Index, Res is 1); %NO
       ((RowTemp is WorkerRow - Index, ColumnTemp is WorkerColumn - Index, getValueFromMatrix(Board, RowTemp, ColumnTemp, Value), Value \= empty, Res is 0),!);
       (Index < 12,
       Index1 is Index + 1,
       verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'NO')).
 %N
-verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'N' ):-
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res, 'N' ):-
       (Row =:= WorkerRow - Index, Column =:= WorkerColumn, Res is 1);
       ((RowTemp is WorkerRow - Index, getValueFromMatrix(Board, RowTemp, WorkerColumn, Value), Value \= empty, Res is 0),!);
       (Index < 12,
       Index1 is Index + 1,
       verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'N')).
 %NE
-verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'NE' ):-
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res, 'NE' ):-
       (Row =:= WorkerRow - Index, Column =:= WorkerColumn + Index, Res is 1);
       ((RowTemp is WorkerRow -Index, ColumnTemp is WorkerColumn + Index, getValueFromMatrix(Board, RowTemp, ColumnTemp, Value), Value \= empty, Res is 0),!);
       (Index < 12,
       Index1 is Index + 1,
       verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'NE')).
 %E
-verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'E' ):-
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res, 'E' ):-
       (Column =:= WorkerColumn + Index, Row =:= WorkerRow, Res is 1);
       ((ColumnTemp is WorkerColumn + Index, getValueFromMatrix(Board, WorkerRow, ColumnTemp, Value), Value \= empty, Res is 0),!);
       (Index < 12,
       Index1 is Index + 1,
       verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'E')).
 %SE
-verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'SE' ):-
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res, 'SE' ):-
       (Row =:= WorkerRow + Index, Column =:= WorkerColumn + Index, Res is 1);
       ((RowTemp is WorkerRow + Index, ColumnTemp is WorkerColumn + Index, getValueFromMatrix(Board, RowTemp, ColumnTemp, Value), Value \= empty, Res is 0),!);
       (Index < 12,
       Index1 is Index + 1,
       verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'SE')).
 %S
-verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'S'):-
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res, 'S'):-
       (Row =:= WorkerRow + Index, Column =:= WorkerColumn, Res is 1);
       ((RowTemp is WorkerRow + Index, getValueFromMatrix(Board, RowTemp, WorkerColumn, Value), Value \= empty, Res is 0),!);
       (Index < 12,
       Index1 is Index + 1,
       verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index1, Res, 'S')).
 %SO
-verifyLine(Board, WorkerRow, WorkerColumn, Row, Column,Index, Res, 'SO' ):-
+verifyLine(Board, WorkerRow, WorkerColumn, Row, Column, Index, Res, 'SO' ):-
       (Row =:= WorkerRow + Index, Column =:= WorkerColumn - Index, Res is 1);
       ((RowTemp is WorkerRow + Index, ColumnTemp is WorkerColumn - Index, getValueFromMatrix(Board, RowTemp, ColumnTemp, Value), Value \= empty, Res is 0),!);
       (Index < 12,
