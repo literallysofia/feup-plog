@@ -1,3 +1,6 @@
+/*Todos os predicados deste ficheiro analisam o input, relativamente às linhas e colunas inseridas pelo utilizador,
+e se as mesmas estão dentro dos limites do tabuleiro. Caso não se satisfaca, pede novamente a informação.*/
+
 manageRow(NewRow) :-
     readRow(Row),
     validateRow(Row, NewRow).

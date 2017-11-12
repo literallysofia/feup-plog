@@ -1,3 +1,4 @@
+/*Verifica o estato atual do jogo após cada jogada. Caso alguma dos predicados se satisfaca, acaba o jogo.*/
 checkGameState(Player, Board) :-
       (
             (checkVictory(Player, 'Row', Board), write('You won!'));
@@ -7,17 +8,20 @@ checkGameState(Player, Board) :-
             (checkFullBoard(Board), write('Woops, no more space left! It is a draw!'));
             (checkValidSpots(Board, 0, 0, Result), Result =:= 0, write('Woops, no more space left! It is a draw!'))
       ).
-      
+
+/*Verifica se existe o padrão de 5 X's seguidos numa linha do tabuleiro.*/
 checkVictory(X, 'Row', Board) :-
       append(_, [R|_], Board),
       append(_, [X,X,X,X,X|_], R).
 
+/*Verifica se existe o padrão de 5 X's seguidos numa coluna do tabuleiro.*/
 checkVictory(X, 'Column', Board) :-
       append(_, [R1,R2,R3,R4,R5|_], Board),
 	append(C1, [X|_], R1), append(C2, [X|_], R2),
 	append(C3, [X|_], R3), append(C4, [X|_], R4), append(C5, [X|_], R5),
 	length(C1, M), length(C2, M), length(C3, M), length(C4, M), length(C5, M).
 
+/*Verifica se existe o padrão de 5 X's seguidos numa "diagonal a descer" do tabuleiro.*/
 checkVictory(X, 'DiagonalDown', Board) :-
       append(_, [R1,R2,R3,R4,R5|_], Board),
 	append(C1, [X|_], R1), append(C2, [X|_], R2),
@@ -25,6 +29,7 @@ checkVictory(X, 'DiagonalDown', Board) :-
 	length(C1, M1), length(C2, M2), length(C3, M3), length(C4, M4), length(C5, M5),
 	M2 is M1+1, M3 is M2+1, M4 is M3+1, M5 is M4+1.
 
+/*Verifica se existe o padrão de 5 X's seguidos numa "diagonal a subir" do tabuleiro.*/
 checkVictory(X, 'DiagonalUp', Board) :-
       append(_, [R1,R2,R3,R4,R5|_], Board),
 	append(C1, [X|_], R1), append(C2, [X|_], R2),
@@ -32,8 +37,9 @@ checkVictory(X, 'DiagonalUp', Board) :-
 	length(C1, M1), length(C2, M2), length(C3, M3), length(C4, M4), length(C5, M5),
 	M2 is M1-1, M3 is M2-1, M4 is M3-1, M5 is M4-1.
 
-
-checkValidSpots(Board, Row, Column, Result) :- % 0 é nao existir espacos, 1 existe
+/*Verifica se existe alguma posição válida tendo em conta as linhas de visão do worker para o próximo jogador colocar a peça. Atribui 0 a Result
+se não existir nenhuma, e atribui 1 se existir pelo menos uma.*/
+checkValidSpots(Board, Row, Column, Result) :-
       (
             (Column =:= 11, Row1 is Row + 1, checkValidSpots(Board, Row1, 0, Result));
             (Row =:= 11, Result is 0);
@@ -174,6 +180,7 @@ checkMove(Board, Player, NewBoard, Expected, ColumnIndex, RowIndex):-
             askCoords(Board, Player, NewBoard, Expected))))).
 
 
+/*Predicado que pede e analisa cada jogada.*/
 askCoords(Board, Player, NewBoard, Expected) :-
       manageRow(NewRow),
       manageColumn(NewColumn),
@@ -265,7 +272,6 @@ addWorkers(InitialBoard, WorkersBoard, 'C', 'C') :-
       printBoard(WorkersBoard).
 
 
-
 blackPlayerTurn(Board, NewBoard, 'P') :-
       write('\n------------------ PLAYER X -------------------\n\n'),
       write('1. Do you want to move a worker? [0(No)/1(Yes)]'),
@@ -298,6 +304,7 @@ whitePlayerTurn(Board, FinalBoard, 'C') :-
       printComputerMove(NewRowIndex, NewColumnIndex),
       printBoard(FinalBoard).
 
+/*Loop do jogo, em que recebe a jogada de cada jogador e verifica o estado do jogo a seguir.*/
 gameLoop(Board, Player1, Player2) :-
       blackPlayerTurn(Board, NewBoard, Player1),
       (
