@@ -28,6 +28,8 @@ getValueFromMatrix([_H|T], Row, Column, Value) :-
         Row1 is Row - 1,
         getValueFromMatrix(T, Row1, Column, Value).
 
+/*Analisa o que está na célula (Row, Column) da matriz. Retorna em Value o 
+conteúdo daquela célula, ou, caso Value já esteja atribuído, a função falha.*/
 getWorkersPosColumn(Board, Value, Row, Column, WorkerRow, WorkerColumn) :-
         (getValueFromMatrix(Board, Row, Column, Value),
         WorkerRow = Row, WorkerColumn = Column);
@@ -40,13 +42,18 @@ getWorkersPosRow(Board, Value, Row, Column, WorkerRow, WorkerColumn) :-
         (Row < 11,
         Row1 is Row + 1,
         getWorkersPosRow(Board, Value, Row1, Column, WorkerRow, WorkerColumn)).
-        
+
+/*Percorre o tabuleiro e com a ajuda do predicado getValueFromMatrix, devolve 
+em WorkerRow1, WorkerColumn1, WorkerRow2 e WorkerColumn2 as posições dos workers 
+na matriz. */
 getWorkersPos(Board, WorkerRow1, WorkerColumn1, WorkerRow2, WorkerColumn2) :-
         Value = red,
         getWorkersPosRow(Board,Value, 0,0, WorkerRow1, WorkerColumn1),
         replaceInMatrix(Board, WorkerRow1, WorkerColumn1, 'RED', NewBoard), %substituir worker1 por RED para nao ser considerado quando  procurar worker2.
         getWorkersPosRow(NewBoard,Value, 0,0, WorkerRow2, WorkerColumn2).
 
+/*Verifica se o tabuleiro está cheio, confirmando se não há nenhuma célula
+‘empty’ no tabuleiro.*/
 checkFullBoard(Board) :-
       \+ (append(_, [R|_], Board),
 	append(_, ['empty'|_], R)).
