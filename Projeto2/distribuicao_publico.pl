@@ -2,22 +2,34 @@
 :- use_module(library(lists)).
 
 %TODO:PARSER DE INPUT
-test(Input, Output, Distances, TotalDistance, TotalDifference, Total):-
-    length(Output, 8), %Harcoded
-    domain(Output, 0 , 2), %Hardcoded
-    global_cardinality(Output,[0-4, 1-2, 2-2]), %Hardcoded
-    fill_distances(Output, Distances),
-    sum(Distances,#=,TotalDistance),
-    fill_differences(Input,Output, Differences),
-    sum(Differences,#=,TotalDifference),
-    Total#= TotalDifference + TotalDistance,
-    labeling([],Output).
 
-fill_differences([],[],[]).
-fill_differences([InputH|InputT], [OutputH|OutputT], [DifferencesH|DifferencesT]):-
-    InputH #= OutputH #<=> DifferencesH #= 0,
-    InputH #\= OutputH #<=> DifferencesH #= 1,
-    fill_differences(InputT, OutputT, DifferencesT).
+test(InputGroups, OutputGroups, OutputIndexs, Distances, TotalDistance, Differences,TotalDifference, Total):-
+    length(OutputGroups, 8), %Harcoded
+    length(OutputIndexs, 8), %Harcoded
+    domain(OutputGroups, 0 , 2), %Hardcoded
+    domain(OutputIndexs, 1 , 8), %Hardcoded
+    all_distinct(OutputIndexs),
+    
+    fill_groups(InputGroups, OutputIndexs, OutputGroups),
+    fill_distances(OutputGroups, Distances),
+    sum(Distances,#=,TotalDistance),
+    fill_differences(OutputIndexs,OutputIndexs, Differences),
+    sum(Differences,#=,TotalDifference),
+    Total#= TotalDifference + TotalDistance*2,
+
+    append(OutputGroups, OutputIndexs, Vars),
+    labeling([minimize(Total)],Vars).
+
+fill_groups(_,[],[]).
+fill_groups(InputGroups, [OutputIndexsH|OutputIndexsT],  [OutputGroupsH|OutputGroupsT]):-
+    element(OutputIndexsH, InputGroups, OutputGroupsH),
+    fill_groups(InputGroups, OutputIndexsT, OutputGroupsT).
+
+fill_differences(_,[],[]).
+fill_differences(OutputIndexs, [OutputIndexsH|OutputIndexsT], [DifferencesH|DifferencesT]):-
+    element(OutputPos, OutputIndexs, OutputIndexsH),
+    DifferencesH #= abs(OutputPos-OutputIndexsH),
+    fill_differences(OutputIndexs, OutputIndexsT, DifferencesT).
 
 %BUG: isto conta a distancia dos ultimos ate ao final
 get_distance(Counter, NotUnique, Vars, Value) :-
