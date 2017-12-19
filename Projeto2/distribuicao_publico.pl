@@ -1,13 +1,14 @@
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
 
-%TODO:PARSER DE INPUT
+%TODO: função que recebe tamanho da lista e numero de grupos e gera uma lista
 
 test(InputGroups, OutputGroups, OutputIndexs, Distances, TotalDistance, Differences,TotalDifference, Total):-
-    length(OutputGroups, 8), %Harcoded
-    length(OutputIndexs, 8), %Harcoded
+    length(InputGroups, InputLength),
+    length(OutputGroups, InputLength),
+    length(OutputIndexs, InputLength),
     domain(OutputGroups, 0 , 2), %Hardcoded
-    domain(OutputIndexs, 1 , 8), %Hardcoded
+    domain(OutputIndexs, 1 , InputLength), 
     all_distinct(OutputIndexs),
     
     fill_groups(InputGroups, OutputIndexs, OutputGroups),
