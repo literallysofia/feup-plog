@@ -1,7 +1,19 @@
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
+:- use_module(library(random)).
 
 %TODO: função que recebe tamanho da lista e numero de grupos e gera uma lista
+
+problem(TotalAudience, TotalGroups, InputGroups) :-
+    MaxGroups is TotalGroups + 1,
+    generateList(TotalAudience, InputGroups, MaxGroups).
+
+generateList(0, [], _).
+generateList(Counter, [Head|Tail], TotalGroups) :-
+  Counter > 0,
+  Counter1 is Counter-1,
+  random(0, TotalGroups, Head),
+  generateList(Counter1, Tail, TotalGroups).
 
 test(InputGroups, Seats, OutputGroups, OutputIndexs, TotalDistance, TotalDifference, NumOfChanges, Total):-
     statistics(walltime, [Start,_]),
