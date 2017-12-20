@@ -2,38 +2,37 @@
 :- use_module(library(lists)).
 :- use_module(library(random)).
 
-%TODO: função que recebe tamanho da lista e numero de grupos e gera uma lista
-
-problem(TotalAudience, TotalGroups, InputGroups) :-
+problem(TotalAudience, TotalGroups, InputGroups, OutputGroups, OutputIndexs,  TotalDistance, TotalDifference, NumOfChanges, Min) :-
     MaxGroups is TotalGroups + 1,
-    generateList(TotalAudience, InputGroups, MaxGroups).
+    generateList(TotalAudience, InputGroups, MaxGroups),
+    label(InputGroups, TotalAudience, TotalGroups, OutputGroups, OutputIndexs,  TotalDistance,  TotalDifference, NumOfChanges, Min).
 
 generateList(0, [], _).
 generateList(Counter, [Head|Tail], TotalGroups) :-
-  Counter > 0,
-  Counter1 is Counter-1,
-  random(0, TotalGroups, Head),
-  generateList(Counter1, Tail, TotalGroups).
+    Counter > 0,
+    Counter1 is Counter-1,
+    random(1, TotalGroups, Head),
+    generateList(Counter1, Tail, TotalGroups).    
 
-test(InputGroups, Seats, OutputGroups, OutputIndexs, TotalDistance, TotalDifference, NumOfChanges, Total):-
+label(InputGroups, TotalAudience, TotalGroups, OutputGroups, OutputIndexs, TotalDistance,  TotalDifference, NumOfChanges, Min):-
     statistics(walltime, [Start,_]),
-    length(InputGroups, Seats),
-    length(OutputGroups, Seats),
-    length(OutputIndexs, Seats),
-    domain(OutputGroups, 0 , 2), %Hardcoded
-    domain(OutputIndexs, 1 , Seats), 
+
+    length(OutputGroups, TotalAudience),
+    length(OutputIndexs, TotalAudience),
+    domain(OutputGroups, 1 , TotalGroups),
+    domain(OutputIndexs, 1 , TotalAudience), 
     all_distinct(OutputIndexs),
-    
     fill_groups(InputGroups, OutputIndexs, OutputGroups),
+
     fill_distances(OutputGroups, Distances),
     sum(Distances,#=,TotalDistance),
     fill_differences(OutputIndexs,OutputIndexs, Differences),
     sum(Differences,#=,TotalDifference),
     changes(Differences, NumOfChanges,0),
-    Total#= TotalDifference*1 + NumOfChanges*2 + TotalDistance*3,
+    Min#= TotalDifference + NumOfChanges + TotalDistance*5,
 
     append(OutputGroups, OutputIndexs, Vars),
-    labeling([minimize(Total)],Vars),
+    labeling([minimize(Min)],Vars),
 
     statistics(walltime, [End,_]),
 	Time is End - Start,
@@ -44,18 +43,6 @@ fill_groups(_,[],[]).
 fill_groups(InputGroups, [OutputIndexsH|OutputIndexsT],  [OutputGroupsH|OutputGroupsT]):-
     element(OutputIndexsH, InputGroups, OutputGroupsH),
     fill_groups(InputGroups, OutputIndexsT, OutputGroupsT).
-
-changes([],NumOfChanges, NumOfChangesAux):- NumOfChanges #=NumOfChangesAux.
-changes([ListH|ListT], NumOfChanges, NumOfChangesAux):-
-    ListH#\=0 #<=> NewAux #= NumOfChangesAux + 1,
-    ListH#=0 #<=> NewAux #= NumOfChangesAux,
-    changes(ListT,NumOfChanges, NewAux).
-
-fill_differences(_,[],[]).
-fill_differences(OutputIndexs, [OutputIndexsH|OutputIndexsT], [DifferencesH|DifferencesT]):-
-    element(OutputPos, OutputIndexs, OutputIndexsH),
-    DifferencesH #= abs(OutputPos-OutputIndexsH),
-    fill_differences(OutputIndexs, OutputIndexsT, DifferencesT).
 
 get_distance(Counter, NotUnique, Vars, Value) :-
     distance_signature(Vars, Sign, Value),
@@ -79,9 +66,14 @@ fill_distances([ListH|ListT], [DistanceH|DistanceT]):-
     #\NotUnique #=> DistanceH #= 0,
     fill_distances(ListT,DistanceT).
 
+fill_differences(_,[],[]).
+fill_differences(OutputIndexs, [OutputIndexsH|OutputIndexsT], [DifferencesH|DifferencesT]):-
+    element(OutputPos, OutputIndexs, OutputIndexsH),
+    DifferencesH #= abs(OutputPos-OutputIndexsH),
+    fill_differences(OutputIndexs, OutputIndexsT, DifferencesT).
 
-
-
-
-
-
+changes([],NumOfChanges, NumOfChangesAux):- NumOfChanges #=NumOfChangesAux.
+changes([ListH|ListT], NumOfChanges, NumOfChangesAux):-
+    ListH#\=0 #=> NewAux #= NumOfChangesAux + 1,
+    ListH#=0 #=> NewAux #= NumOfChangesAux,
+    changes(ListT,NumOfChanges, NewAux).
