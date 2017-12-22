@@ -2,14 +2,12 @@
 :- use_module(library(lists)).
 :- use_module(library(random)).
 
-%display do resultado
 displayOutput(OutputGroups, OutputIndexs, TotalDifference, NumOfChanges):-
     write(' > OUTPUT GROUPS: '), write(OutputGroups),nl,
     write(' > OUTPUT INDEXS: '),write(OutputIndexs),nl,
     write(' > Total Changes: '), write(NumOfChanges),nl,
     write(' > Total Changes Value: '), write(TotalDifference),nl.
 
-%gerar uma lista com Counter elementos random de 1 a TotalGroups
 generateList(0, [], _).
 generateList(Counter, [Head|Tail], TotalGroups) :-
     Counter > 0,
@@ -17,59 +15,58 @@ generateList(Counter, [Head|Tail], TotalGroups) :-
     random(1, TotalGroups, Head),
     generateList(Counter1, Tail, TotalGroups).
 
-%chama o predicado de gerar uma lista e depois chama a funçao de label para a lista gerada
 problem(TotalAudience, TotalGroups):-
     MaxGroups is TotalGroups + 1,
     generateList(TotalAudience, InputGroups, MaxGroups),
     write(' > INPUT  GROUPS:'), write(InputGroups),nl,
-    label(InputGroups, TotalAudience, TotalGroups, OutputGroups, OutputIndexs, TotalDifference,  NumOfChanges),
+    solve(InputGroups, TotalAudience, TotalGroups, OutputGroups, OutputIndexs, TotalDifference,  NumOfChanges),
     displayOutput(OutputGroups, OutputIndexs, TotalDifference, NumOfChanges).
 
-%chama o predicado de label para a lista InputGroups
 problem(InputGroups):-
     length(InputGroups, TotalAudience),
     maximum(TotalGroups, InputGroups),
-    label(InputGroups, TotalAudience, TotalGroups, OutputGroups, OutputIndexs, TotalDifference,  NumOfChanges),
+    solve(InputGroups, TotalAudience, TotalGroups, OutputGroups, OutputIndexs, TotalDifference,  NumOfChanges),
     write(' > INPUT  GROUPS: '), write(InputGroups),nl,
     displayOutput(OutputGroups, OutputIndexs, TotalDifference, NumOfChanges).
 
-%faz labeling de OutputGroups e OutputIndexs
-label(InputGroups, TotalAudience, TotalGroups, OutputGroups, OutputIndexs, TotalDistance, NumOfChanges):-
+solve(InputGroups, TotalAudience, TotalGroups, OutputGroups, OutputIndexs, TotalDifference, NumOfChanges):-
     statistics(walltime, [Start,_]),
 
+    %Variáveis de Decisão
     length(OutputGroups, TotalAudience),
     length(OutputIndexs, TotalAudience),
     domain(OutputGroups, 1 , TotalGroups),
     domain(OutputIndexs, 1 , TotalAudience), 
+    
+    %Restrições
     all_distinct(OutputIndexs),
-    fill_groups(InputGroups, OutputIndexs, OutputGroups),
+    get_groups(InputGroups, OutputIndexs, OutputGroups),
+    approximate(OutputGroups),
 
-    fill_distances(OutputGroups, Distances),
-    sum(Distances,#=,TotalDistance), %separação dos grupos
+    %Função de Avaliação
     fill_differences(OutputIndexs,OutputIndexs, Differences),
-    sum(Differences,#=,TotalDifference), %quanto é que as pessoa se moveram
-    get_changes(NumOfChanges, Differences), %quantas pessoas se moveram
-    Min #= TotalDifference + NumOfChanges + TotalDistance*5,
+    sum(Differences,#=,TotalDifference),
+    get_changes(NumOfChanges, Differences),
+    Min #= NumOfChanges + TotalDifference,
 
+    %Labelling
     append(OutputGroups, OutputIndexs, Vars),
-    labeling([minimize(Min)],Vars),
+    labeling([minimize(Min), enum],Vars),
 
     statistics(walltime, [End,_]),
 	Time is End - Start,
     format(' > Duration: ~3d seconds~n', [Time]).
 
-%associa cada pessoa ao seu grupo
-fill_groups(_,[],[]).
-fill_groups(InputGroups, [OutputIndexsH|OutputIndexsT],  [OutputGroupsH|OutputGroupsT]):-
+get_groups(_,[],[]).
+get_groups(InputGroups, [OutputIndexsH|OutputIndexsT],  [OutputGroupsH|OutputGroupsT]):-
     element(OutputIndexsH, InputGroups, OutputGroupsH),
-    fill_groups(InputGroups, OutputIndexsT, OutputGroupsT).
+    get_groups(InputGroups, OutputIndexsT, OutputGroupsT).
 
-%ve o quao longe esta a primeira pessoa à sua direita do mesmo grupo
-get_distance(Counter, NotUnique, Vars, Value) :-
-    distance_signature(Vars, Sign, Value),
+get_distance(Counter, NotUnique, OutputGroupsT, Value) :-
+    distance_signature(OutputGroupsT, Sign, Value),
     automaton(Sign,_,Sign,
         [source(i), sink(i), sink(j)],
-        [arc(i,0,i, [C+1,  NU+0]), arc(i,1,j, [C+1, NU+1]),
+        [arc(i,0,i, [C+1,  NU+0]), arc(i,1,j, [C+0, NU+1]),
         arc(j,0,j, [C+0,  NU+0]), arc(j,1,j, [C+0,  NU+0])],
         [C, NU], [0,0], [Counter,NotUnique]).    
 
@@ -80,23 +77,20 @@ distance_signature([X|Xs], [S|Ss], Value):-
     X#=Value #=> S#=1,
     distance_signature(Xs,Ss, Value).
 
-fill_distances([],[]).
-fill_distances([ListH|ListT], [DistanceH|DistanceT]):-
-    get_distance(AuxDistanceH, NotUnique, ListT, ListH),
-    NotUnique #=> DistanceH #=AuxDistanceH,
-    #\NotUnique #=> DistanceH #= 0,
-    fill_distances(ListT,DistanceT).
+approximate([]).
+approximate([OutputGroupsH|OutputGroupsT]):-
+    get_distance(Distance, NotUnique, OutputGroupsT, OutputGroupsH),
+    NotUnique #=> Distance #=0,
+    approximate(OutputGroupsT).
 
-%preenche o vetor com a distancia que cada pessoa andou
 fill_differences(_,[],[]).
 fill_differences(OutputIndexs, [OutputIndexsH|OutputIndexsT], [DifferencesH|DifferencesT]):-
     element(OutputPos, OutputIndexs, OutputIndexsH),
     DifferencesH #= abs(OutputPos-OutputIndexsH),
     fill_differences(OutputIndexs, OutputIndexsT, DifferencesT).
 
-%quantas pessoas mudaram de lugar
-get_changes(Counter, Vars) :-
-    changes_signature(Vars, Sign),
+get_changes(Counter, Differences) :-
+    changes_signature(Differences, Sign),
     automaton(Sign,_,Sign,
         [source(i), sink(i)],
         [arc(i,0,i,[C+0]), arc(i,1,i, [C+1])],
