@@ -26,7 +26,9 @@ problem(TotalAudience, TotalGroups):-
     displayOutput(OutputGroups, OutputIndexs, TotalDifference, NumOfChanges).
 
 %chama o predicado de label para a lista InputGroups
-problem(InputGroups, TotalAudience, TotalGroups):-
+problem(InputGroups):-
+    length(InputGroups, TotalAudience),
+    maximum(TotalGroups, InputGroups),
     label(InputGroups, TotalAudience, TotalGroups, OutputGroups, OutputIndexs, TotalDifference,  NumOfChanges),
     write(' > INPUT  GROUPS: '), write(InputGroups),nl,
     displayOutput(OutputGroups, OutputIndexs, TotalDifference, NumOfChanges).
