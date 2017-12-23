@@ -55,7 +55,8 @@ solve(InputGroups, TotalAudience, TotalGroups, OutputGroups, OutputIndexs, Total
 
     statistics(walltime, [End,_]),
 	Time is End - Start,
-    format(' > Duration: ~3d seconds~n', [Time]).
+    format(' > Duration: ~3d seconds~n', [Time]),
+    fd_statistics.
 
 get_groups(_,[],[]).
 get_groups(InputGroups, [OutputIndexsH|OutputIndexsT],  [OutputGroupsH|OutputGroupsT]):-
