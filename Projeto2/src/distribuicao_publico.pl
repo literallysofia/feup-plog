@@ -51,12 +51,12 @@ solve(InputGroups, TotalAudience, TotalGroups, OutputGroups, OutputIndexs, Total
 
     %Labelling
     append(OutputGroups, OutputIndexs, Vars),
-    labeling([minimize(Min), enum],Vars),
+    labeling([minimize(Min),step,min],Vars),
 
     statistics(walltime, [End,_]),
 	Time is End - Start,
-    format(' > Duration: ~3d seconds~n', [Time]),
-    fd_statistics.
+    format(' > Duration: ~3d s~n', [Time]).
+    %fd_statistics.
 
 get_groups(_,[],[]).
 get_groups(InputGroups, [OutputIndexsH|OutputIndexsT],  [OutputGroupsH|OutputGroupsT]):-
